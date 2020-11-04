@@ -1,6 +1,4 @@
-﻿using System.Xml.Schema;
-
-namespace Cored.Web
+﻿namespace Cored.Web
 {
     using System;
     using System.Net;
@@ -19,30 +17,14 @@ namespace Cored.Web
         /// </summary>
         private bool _disposing;
 
-        /// <summary>
-        /// Gets or sets an action callback when the connectivity state changes
-        /// </summary>
-        private Action<bool> _stateChangedCallback;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether there has been a call to the endpoint yet,
-        /// or this is the first call.
-        /// </summary>
-        private bool _firstCallMade;
-
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the endpoint being checked
-        /// </summary>
-        public string Endpoint { get; private set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the endpoint is responsive
         /// </summary>
-        public bool Responsive { get; set; }
+        private bool Responsive { get; set; }
 
         #endregion
 
