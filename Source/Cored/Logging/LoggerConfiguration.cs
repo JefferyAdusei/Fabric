@@ -1,11 +1,11 @@
-﻿namespace Cored.Logging.File
+﻿namespace Cored.Logging
 {
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// The configuration for a <see cref="FileLogger"/>
+    /// The configuration for a <see cref="ILogger"/> implementations
     /// </summary>
-    public class FileLoggerConfiguration
+    public class LoggerConfiguration
     {
         #region public Properties
 
