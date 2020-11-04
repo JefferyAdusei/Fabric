@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="path">The path of the file to log to</param>
         /// <param name="configuration">The configuration setting to use</param>
-        public FileLoggerProvider(string path, FileLoggerConfiguration configuration)
+        public FileLoggerProvider(string path, LoggerConfiguration configuration)
         {
             // Set the configuration
             _configuration = configuration;
@@ -37,7 +37,7 @@
         /// <summary>
         /// Gets the configuration to use when creating a <see cref="FileLogger"/>
         /// </summary>
-        private readonly FileLoggerConfiguration _configuration;
+        private readonly LoggerConfiguration _configuration;
 
         /// <summary>
         /// Keeps track of the loggers already created.

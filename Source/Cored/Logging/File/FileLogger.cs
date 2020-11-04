@@ -1,13 +1,14 @@
 ﻿namespace Cored.Logging.File
 {
     using System;
-    using System.Collections.Concurrent;
     using System.IO;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
+    using Async;
 
     /// <inheritdoc />
     /// <summary>
-    /// A logger that writes logs to file
+    /// A logger that writes logs as normal text to file
     /// </summary>
     public class FileLogger : ILogger
     {
@@ -18,7 +19,7 @@
         /// </summary>
         /// <param name="filePath">The file path to write logs to</param>
         /// <param name="configuration">The configuration to use</param>
-        public FileLogger(string filePath, FileLoggerConfiguration configuration)
+        public FileLogger(string filePath, LoggerConfiguration configuration)
         {
             // Get absolute path
             filePath = Path.GetFullPath(filePath);
@@ -36,12 +37,7 @@
         /// <summary>
         /// A list of file locks based on file path
         /// </summary>
-        private static readonly ConcurrentDictionary<string, object> FileLocks = new ConcurrentDictionary<string, object>();
-
-        /// <summary>
-        /// The lock to lock the list of locks
-        /// </summary>
-        private static readonly object FileLockLock = new object();
+        private static readonly Guid FileLock = new Guid();
 
         #endregion
 
@@ -60,7 +56,7 @@
         /// <summary>
         /// The log settings to use.
         /// </summary>
-        private readonly FileLoggerConfiguration _configuration;
+        private readonly LoggerConfiguration _configuration;
 
         #endregion
 
@@ -75,7 +71,7 @@
         /// <param name="state">The details of the message</param>
         /// <param name="exception">Any exception to add to the log</param>
         /// <param name="formatter">The formatter for converting the state and exception to a message string</param>
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             // If we should not log...
             if (!IsEnabled(logLevel))
@@ -83,17 +79,8 @@
                 return;
             }
 
-            object fileLock;
-
-            // Double safety even though the file locks should be thread safe
-            lock (FileLockLock)
-            {
-                // Get the file lock based on the absolute path
-                fileLock = FileLocks.GetOrAdd(_filePath.ToUpper(), path => new object());
-            }
-
             // Lock the file
-            lock (fileLock)
+            await AsyncLock.LockAsync(FileLock.ToString(), async () =>
             {
                 // Ensure folder exists
                 if (!Directory.Exists(_directory))
@@ -104,12 +91,14 @@
                 // Open the file
                 using StreamWriter fileStream =
                     new StreamWriter(File.Open(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
-                                                         FileShare.ReadWrite));
+                                               FileShare.ReadWrite));
                 fileStream.BaseStream.Seek(0, SeekOrigin.End);
 
                 // Write the message to the file
-                fileStream.Write($"{logLevel}: {DateTimeOffset.Now:g} {formatter(state, exception)} \n");
-            }
+                await fileStream.WriteAsync($"{logLevel}: {DateTimeOffset.Now:g} {formatter(state, exception)} \n");
+
+                return await Task.FromResult(true);
+            });
         }
 
         /// <inheritdoc />
