@@ -30,7 +30,6 @@
     <Folder Include="Fabric\Di\" />
     <Folder Include="Logging\Interfaces\" />
     <Folder Include="Logging\Json\" />
-    <Folder Include="Logging\Xml\" />
   </ItemGroup>
 
 </Project>

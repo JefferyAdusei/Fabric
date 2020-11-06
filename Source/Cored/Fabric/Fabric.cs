@@ -3,7 +3,6 @@
     using System;
     using Microsoft.Extensions.DependencyInjection;
     using Construction;
-    using Di;
     using Logging;
     using static Di.FabricDi;
 
@@ -59,7 +58,7 @@
             // Log the startup complete
             if (shouldLog)
             {
-                Logger.LogCriticalSource($"Fabric has started in{FabricDi.FabricEnvironment.Configuration}...");
+                Logger.LogCriticalSource($"Fabric has started in{FabricEnvironment.Configuration}...");
             }
         }
 
