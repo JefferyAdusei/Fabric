@@ -77,7 +77,7 @@
                 registeredWaitHandle?.Unregister(null);
 
                 // Dispose of the token we had to create to register for the cancellation token callback
-                tokenRegistration?.Dispose();
+                tokenRegistration?.DisposeAsync();
             }
         }
     }

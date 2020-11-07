@@ -5,7 +5,7 @@
 
     /// <inheritdoc />
     /// <summary>
-    /// Creates a default framework construction containing all 
+    /// Creates a default framework construction containing all
     /// the default configuration and services
     /// </summary>
     /// <example>
@@ -14,7 +14,7 @@
     /// </para>
     /// <code>
     ///     // Build the framework adding any required services
-    ///     Framework.Construct&lt;DefaultFrameworkConstruction&gt;()
+    ///     Framework.Construct&lt;LocalFabricConstruction&gt;()
     ///             .AddFileLogger()
     ///             .Build();
     /// </code>
@@ -34,6 +34,11 @@
                 .AddLocalServices();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalFabricConstruction"/> class
+        /// which allows user to define and configure their own <see cref="IConfigurationBuilder"/>
+        /// </summary>
+        /// <param name="configureAction"><see cref="IConfigurationBuilder"/> for user configuration</param>
         public LocalFabricConstruction(Action<IConfigurationBuilder> configureAction)
         {
             // Configure...

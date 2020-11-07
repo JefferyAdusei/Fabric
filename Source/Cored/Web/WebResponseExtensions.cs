@@ -41,22 +41,29 @@
                 StatusCode = serverResponse.StatusCode
             };
 
-            // If response is successful
-            if (result.StatusCode == HttpStatusCode.OK)
+            // If response is not successful
+            if (result.StatusCode != HttpStatusCode.OK)
             {
-                // Open the response stream...
-                using Stream responseStream = serverResponse.GetResponseStream();
-
-                // Get a read stream
-                using StreamReader streamReader = new StreamReader(responseStream!);
-
                 /*
-                 * Read in the response body
-                 * NOTE: By reading to the end of the stream, the stream will also close
-                 *       for us (which we must do to release the request)
-                 */
-                result.RawServerResponse = streamReader.ReadToEnd();
+                * Read in the response body
+                * NOTE: By reading to the end of the stream, the stream will also close
+                *       for us (which we must do to release the request)
+                */
+                return result;
             }
+
+            // Open the response stream...
+            using Stream responseStream = serverResponse.GetResponseStream();
+
+            // Get a read stream
+            using StreamReader streamReader = new StreamReader(responseStream!);
+
+            /*
+             * Read in the response body
+             * NOTE: By reading to the end of the stream, the stream will also close
+             *       for us (which we must do to release the request)
+             */
+            result.RawServerResponse = streamReader.ReadToEnd();
 
             return result;
         }
@@ -95,22 +102,29 @@
                 StatusCode = serverResponse.StatusCode
             };
 
-            // If response is successful
-            if (result.StatusCode == HttpStatusCode.OK)
+            // If response is not successful
+            if (result.StatusCode != HttpStatusCode.OK)
             {
-                // Open the response stream...
-                using Stream responseStream = serverResponse.GetResponseStream();
-
-                // Get a read stream
-                using StreamReader streamReader = new StreamReader(responseStream!);
-
                 /*
-                 * Read in the response body
-                 * NOTE: By reading to the end of the stream, the stream will also close
-                 *       for us (which we must do to release the request)
+                 * Return the server result literally because there is no raw server response to return.
+                 * This is because the server status code returned a status code aside 200 thus the
+                 * expected server response was not returned by the server.
                  */
-                result.RawServerResponse = await streamReader.ReadToEndAsync();
+                return result;
             }
+
+            // Open the response stream...
+            await using Stream responseStream = serverResponse.GetResponseStream();
+
+            // Get a read stream
+            using StreamReader streamReader = new StreamReader(responseStream!);
+
+            /*
+             * Read in the response body
+             * NOTE: By reading to the end of the stream, the stream will also close
+             *       for us (which we must do to release the request)
+             */
+            result.RawServerResponse = await streamReader.ReadToEndAsync();
 
             return result;
         }

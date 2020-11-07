@@ -92,7 +92,7 @@
             }
         }
 
-/// <summary>
+        /// <summary>
         /// Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
         /// is responsive.
         /// </summary>

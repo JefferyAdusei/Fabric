@@ -269,13 +269,23 @@
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(TResponse));
 
                             // Create a memory stream for the raw string data
-                            using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(result.RawServerResponse));
+                            await using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(result.RawServerResponse));
 
                             // Deserialize XML string
                             result.ServerResponse = (TResponse)xmlSerializer.Deserialize(memoryStream);
 
                             break;
                         }
+
+                    // YAML
+                    case MimeTypes.Yaml:
+                        break;
+
+                    // TEXT
+                    case MimeTypes.Text:
+                        break;
+
+                    // UNKNOWN
                     default:
                         {
                             // If deserialize failed, then set error message
