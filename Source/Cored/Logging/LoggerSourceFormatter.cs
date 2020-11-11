@@ -12,9 +12,9 @@
         /// <summary>
         /// Formats the message including the source information pulled out of the state
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="exception"></param>
-        /// <returns></returns>
+        /// <param name="state">The state information about the log</param>
+        /// <param name="exception">The exception associated with the log</param>
+        /// <returns>The formatted message</returns>
         public static string Format(object[] state, Exception exception)
         {
             // Get the values from the state

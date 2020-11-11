@@ -12,7 +12,7 @@
         public void HandleError(Exception exception)
         {
             // Log it
-            Logger.LogErrorSource("An Exception was thrown", exception:exception);
+            Logger.LogErrorSource("An Exception occured", exception:exception);
         }
 
         #endregion

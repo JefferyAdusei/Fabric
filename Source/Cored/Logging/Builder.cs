@@ -1,11 +1,13 @@
 ﻿namespace Cored.Logging
 {
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Fabric.Construction;
     using File;
     using Xml;
 
     /// <summary>
-    /// Extension methods for the <see cref="ILogger"/> implemented classes.
+    /// Extension methods for the <see cref="ILoggingBuilder"/> implemented classes.
     /// </summary>
     public static class Builder
     {
@@ -57,6 +59,38 @@
 
         #endregion
 
-        // TODO: Add framework construction
+        #region Framework Construction
+
+        /// <summary>
+        /// Injects a file logger into the fabric construction
+        /// </summary>
+        /// <param name="construction">The calling fabric construction to be chained</param>
+        /// <param name="logPath">The path to the log file</param>
+        /// <returns>The fabric construction for chaining</returns>
+        public static FabricConstruction AddFileLogger(this FabricConstruction construction, string logPath = "log.txt")
+        {
+            // Make use of default AddLogging extension that comes with .NET Core's dependency injection
+            construction.ServiceCollection.AddLogging(options => options?.AddFile(logPath));
+
+            // Chain the construction
+            return construction;
+        }
+
+        /// <summary>
+        /// Injects an xml logger into the fabric construction
+        /// </summary>
+        /// <param name="construction">The calling fabric construction to be chained</param>
+        /// <param name="logPath">The path to the log file</param>
+        /// <returns>The fabric construction for chaining</returns>
+        public static FabricConstruction AddXmlLogger(this FabricConstruction construction, string logPath = "log.xml")
+        {
+            // Make use of default AddLogging extension that comes with .NET Core's dependency injection
+            construction.ServiceCollection.AddLogging(builder => builder.AddXml(logPath));
+
+            // Chain the construction
+            return construction;
+        }
+
+        #endregion
     }
 }
