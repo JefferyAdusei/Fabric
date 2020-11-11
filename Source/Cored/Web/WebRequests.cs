@@ -4,9 +4,9 @@
     using System.IO;
     using System.Net;
     using System.Text;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Newtonsoft.Json;
     using Mimes;
 
     /// <summary>
@@ -121,7 +121,7 @@
                 switch (sendMimeType)
                 {
                     case MimeTypes.Json:
-                        contentString = JsonConvert.SerializeObject(content);
+                        contentString = JsonSerializer.Serialize(content);
                         break;
 
                     case MimeTypes.Xml:
@@ -130,7 +130,7 @@
                             XmlSerializer xmlSerializer = new XmlSerializer(content.GetType());
 
                             // Create a string writer to receive the serialized string
-                            using StringWriter stringWriter = new StringWriter();
+                            await using StringWriter stringWriter = new StringWriter();
 
                             // Serialize the object to a string
                             xmlSerializer.Serialize(stringWriter, content);
@@ -144,7 +144,7 @@
                 }
 
                 // Get body stream...
-                using Stream requestStream = await request.GetRequestStreamAsync();
+                await using Stream requestStream = await request.GetRequestStreamAsync();
 
                 /*
                  * NOTE: GetRequestStreamAsync could throw with a SocketException (or an inner exception
@@ -158,7 +158,7 @@
                  */
 
                 // Create a stream writer from the body stream..
-                using StreamWriter streamWriter = new StreamWriter(requestStream);
+                await using StreamWriter streamWriter = new StreamWriter(requestStream);
 
                 // Write content to HTTP body stream
                 await streamWriter.WriteAsync(contentString);
@@ -259,7 +259,7 @@
                 {
                     // JSON
                     case MimeTypes.Json:
-                        result.ServerResponse = JsonConvert.DeserializeObject<TResponse>(result.RawServerResponse);
+                        result.ServerResponse = JsonSerializer.Deserialize<TResponse>(result.RawServerResponse);
                         break;
 
                     // XML
@@ -272,7 +272,7 @@
                             await using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(result.RawServerResponse));
 
                             // Deserialize XML string
-                            result.ServerResponse = (TResponse)xmlSerializer.Deserialize(memoryStream);
+                            result.ServerResponse = (TResponse) xmlSerializer.Deserialize(memoryStream);
 
                             break;
                         }
