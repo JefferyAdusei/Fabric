@@ -63,6 +63,25 @@
         }
 
         /// <summary>
+        /// Should be called once a Fabric Construction is finished and we want to build it and start the
+        /// application in a hosted environment such as ASP.NET Core where the service provider is
+        /// already built.
+        /// </summary>
+        /// <param name="provider">The service provider from the hosted environment.</param>
+        /// <param name="shouldLog">Indicates whether the fabric started message should be logged</param>
+        public static void Build(IServiceProvider provider, bool shouldLog = true)
+        {
+            // Build the given service provider by the hosted environment.
+            Construction.Build(provider);
+
+            // Log at startup complete
+            if (shouldLog)
+            {
+                Logger.LogCriticalSource($"Fabric has started in {FabricEnvironment.Configuration}...");
+            }
+        }
+
+        /// <summary>
         /// The initial call to setting up and using Fabric
         /// </summary>
         /// <typeparam name="T">The type of the construction to use</typeparam>
@@ -77,7 +96,7 @@
         }
 
         /// <summary>
-        /// The initial call to setting up and using Fabric
+        /// The initial call to setting up and using Fabric from a hosted environment
         /// </summary>
         /// <typeparam name="T">The type of the construction to use</typeparam>
         /// <param name="constructionInstance">The instance of the construction to use</param>
