@@ -21,12 +21,9 @@
         /// <param name="configuration">The configuration to use</param>
         public FileLogger(string filePath, LoggerConfiguration configuration)
         {
-            // Get absolute path
-            filePath = Path.GetFullPath(filePath);
-
             // Set members
-            _filePath = filePath;
-            _directory = Path.GetDirectoryName(filePath);
+            _filePath = Path.GetFullPath(filePath);
+            _directory = Path.GetDirectoryName(_filePath);
             _configuration = configuration;
         }
 
@@ -35,9 +32,9 @@
         #region Static Properties
 
         /// <summary>
-        /// A list of file locks based on file path
+        /// Gets a unique key to lock file access
         /// </summary>
-        private static readonly Guid FileLock = new Guid();
+        private static string FileLock => nameof(FileLogger) + Guid.NewGuid();
 
         #endregion
 
@@ -80,7 +77,7 @@
             }
 
             // Lock the file
-            await AsyncLock.LockAsync(FileLock.ToString(), async () =>
+            await AsyncLock.LockAsync(FileLock, async () =>
             {
                 // Ensure folder exists
                 if (!Directory.Exists(_directory))
@@ -89,7 +86,7 @@
                 }
 
                 // Open the file
-                using StreamWriter fileStream =
+                await using StreamWriter fileStream =
                     new StreamWriter(File.Open(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
                                                FileShare.ReadWrite));
                 fileStream.BaseStream.Seek(0, SeekOrigin.End);

@@ -22,12 +22,9 @@
         /// <param name="configuration">The configuration to use</param>
         public XmlLogger(string filePath, LoggerConfiguration configuration)
         {
-            // Get absolute path
-            filePath = Path.GetFullPath(filePath);
-
             // Set members
-            _filePath = filePath;
-            _directory = Path.GetDirectoryName(filePath);
+            _filePath = Path.GetFullPath(filePath);
+            _directory = Path.GetDirectoryName(_filePath);
             _configuration = configuration;
         }
 
@@ -36,9 +33,9 @@
         #region Static Properties
 
         /// <summary>
-        /// A list of file locks based on file path
+        /// Gets a unique key to lock files
         /// </summary>
-        private static readonly Guid FileLock = new Guid();
+        private static string FileLock => nameof(XmlLogger) + Guid.NewGuid();
 
         #endregion
 
@@ -59,6 +56,9 @@
         /// </summary>
         private readonly LoggerConfiguration _configuration;
 
+        /// <summary>
+        /// The document model provided by LINQ to create xml documents
+        /// </summary>
         private XDocument _xmlDocument;
 
         #endregion
@@ -85,7 +85,7 @@
             // Get values from the state
             object[] values = state as object[];
 
-            await AsyncLock.LockAsync(FileLock.ToString(), () =>
+            await AsyncLock.LockAsync(FileLock, () =>
             {
                 if (!Directory.Exists(_directory))
                 {
@@ -96,7 +96,7 @@
                 if (!File.Exists(_filePath))
                 {
                     _xmlDocument = new XDocument(
-                                                 new XDeclaration("1.0", $"UTF-8", "yes"),
+                                                 new XDeclaration("1.0", "UTF-8", "yes"),
                                                  new XElement("Logs"));
                     _xmlDocument.Save(_filePath);
                 }

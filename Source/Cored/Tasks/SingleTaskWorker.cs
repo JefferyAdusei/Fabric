@@ -41,7 +41,7 @@
         /// <summary>
         /// Gets or sets a unique ID for locking the starting and stopping calls of this class
         /// </summary>
-        public string LockingKey { get; set; } = nameof(SingleTaskWorker) + Guid.NewGuid();
+        public string LockingKey { get; } = nameof(SingleTaskWorker) + Guid.NewGuid();
 
         /// <summary>
         /// Gets The name that identifies the worker (used in unhandled exception logs to report
