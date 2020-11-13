@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cored", "Cored\Cored.csproj", "{333388BD-C1D4-4DC9-8749-89D71FEA49E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cored", "Cored\Cored.csproj", "{333388BD-C1D4-4DC9-8749-89D71FEA49E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{AAC66E9D-3334-428B-B378-457E3CDEDA58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{C252E436-CADB-4987-9089-50CD69FA2F96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{333388BD-C1D4-4DC9-8749-89D71FEA49E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{333388BD-C1D4-4DC9-8749-89D71FEA49E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{333388BD-C1D4-4DC9-8749-89D71FEA49E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C252E436-CADB-4987-9089-50CD69FA2F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C252E436-CADB-4987-9089-50CD69FA2F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C252E436-CADB-4987-9089-50CD69FA2F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C252E436-CADB-4987-9089-50CD69FA2F96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C252E436-CADB-4987-9089-50CD69FA2F96} = {AAC66E9D-3334-428B-B378-457E3CDEDA58}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27DD6243-B5D6-43EE-8D74-55EB73AFA862}

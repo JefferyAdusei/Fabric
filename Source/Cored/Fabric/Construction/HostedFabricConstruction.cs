@@ -34,7 +34,7 @@
     ///      //  Startup.cs (in Configure)
     ///      // ---------------------------
     ///          // Use Cored Fabric
-    ///          app.UseCoredFabric();
+    ///          app.UseFabric();
     ///  </code>
     ///  </example>
     public class HostedFabricConstruction : FabricConstruction

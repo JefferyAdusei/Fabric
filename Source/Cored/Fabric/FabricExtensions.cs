@@ -124,7 +124,7 @@
 
             // Adds a default logger so that we can get a non-generic ILogger
             // that will have the category name of "Fabric"
-            construction.ServiceCollection.AddTransient(provider => provider.GetService<ILoggerFactory>().CreateLogger("Fabric"));
+            construction.ServiceCollection.AddTransient(provider => provider?.GetService<ILoggerFactory>()?.CreateLogger("Fabric"));
 
             // Chain the construction
             return construction;

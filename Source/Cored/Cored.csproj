@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Array\" />
-    <Folder Include="Environment\WebHosted\" />
     <Folder Include="Fabric\Di\" />
     <Folder Include="Logging\Interfaces\" />
     <Folder Include="Logging\Json\" />
