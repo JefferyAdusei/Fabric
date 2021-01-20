@@ -86,13 +86,13 @@
         /// Starts the given task running if it is not already running
         /// </summary>
         /// <returns></returns>
-        public Task<bool> StartAsync()
+        public async Task<bool> StartAsync()
         {
             // Log it
             Logger.LogTraceSource($"Start requested...");
 
             // Make sure only one start or stop call runs at a time.
-            return AsyncLock.LockAsync(LockingKey, () =>
+            return await AsyncLock.LockAsync(LockingKey, () =>
             {
                 // If we are already running...
                 if (IsRunning)
@@ -126,10 +126,10 @@
         /// to finish
         /// </summary>
         /// <returns></returns>
-        public Task StopAsync()
+        public async Task<bool> StopAsync()
         {
             // Make sure only  one startup or shutdown call runs at a time...
-            return AsyncLock.LockAsync(LockingKey, async () =>
+            return await AsyncLock.LockAsync(LockingKey, async () =>
             {
                 // If we are not running
                 if (!IsRunning)
