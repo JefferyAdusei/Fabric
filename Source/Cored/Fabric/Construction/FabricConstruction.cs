@@ -45,17 +45,17 @@
         /// <summary>
         /// The environment to use.
         /// </summary>
-        public IFabricEnvironment Environment { get; protected set; }
+        public IFabricEnvironment Environment { get; private set; }
 
         /// <summary>
         /// The configuration to use.
         /// </summary>
-        public IConfiguration Configuration { get; protected set; }
+        public IConfiguration Configuration { get; private set; }
 
         /// <summary>
         /// The dependency injection service provider
         /// </summary>
-        public IServiceProvider ServiceProvider { get; protected set; }
+        public IServiceProvider ServiceProvider { get; private set; }
 
         /// <summary>
         /// The services that will get used and compiled once the framework is built.

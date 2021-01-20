@@ -85,7 +85,7 @@
         public static FabricConstruction AddXmlLogger(this FabricConstruction construction, string logPath = "log.xml")
         {
             // Make use of default AddLogging extension that comes with .NET Core's dependency injection
-            construction.ServiceCollection.AddLogging(builder => builder.AddXml(logPath));
+            construction.ServiceCollection.AddLogging(builder => builder?.AddXml(logPath));
 
             // Chain the construction
             return construction;
