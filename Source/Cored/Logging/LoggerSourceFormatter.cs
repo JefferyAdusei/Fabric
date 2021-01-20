@@ -31,7 +31,7 @@
                 exceptionMessage = $"\r\n{exception}";
             }
 
-            return $"{message} [{Path.GetFileName(filepath)} > {origin} () > Line {lineNumber}] {exceptionMessage}";
+            return $"{message}\n[{Path.GetFileName(filepath)} > {origin} () > Line {lineNumber}] {exceptionMessage}";
         }
     }
 }
