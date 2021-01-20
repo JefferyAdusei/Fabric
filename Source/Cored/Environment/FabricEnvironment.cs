@@ -23,6 +23,9 @@
         /// https://github.com/dotnet/corefx/issues/27417
         public bool IsMobile => RuntimeInformation.FrameworkDescription?.ToLower().Contains("mono") == true;
 
+        /// <inheritdoc />
+        public bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
         #endregion
     }
 }

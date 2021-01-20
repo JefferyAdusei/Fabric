@@ -19,5 +19,10 @@
         /// Gets a value indicating whether the application is running in a mobile platform.
         /// </summary>
         bool IsMobile { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the application is running on a windows operating system
+        /// </summary>
+        bool IsWindows { get; }
     }
 }
