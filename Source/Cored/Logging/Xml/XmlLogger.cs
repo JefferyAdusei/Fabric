@@ -1,11 +1,12 @@
 ﻿namespace Cored.Logging.Xml
 {
+    using Async;
+    using Microsoft.Extensions.Logging;
+    using Reflection;
     using System;
     using System.IO;
     using System.Threading.Tasks;
     using System.Xml.Linq;
-    using Microsoft.Extensions.Logging;
-    using Async;
 
     /// <inheritdoc />
     /// <summary>
@@ -23,7 +24,7 @@
         public XmlLogger(string filePath, LoggerConfiguration configuration)
         {
             // Set members
-            _filePath = Path.GetFullPath(filePath);
+            _filePath = filePath.NormalizePath().ResolvePath();
             _directory = Path.GetDirectoryName(_filePath);
             _configuration = configuration;
         }
@@ -74,7 +75,7 @@
         /// <param name="state">The details of the message</param>
         /// <param name="exception">Any exception to add to the log</param>
         /// <param name="formatter">The formatter for converting the state and exception to a message string</param>
-        public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter = null)
+        public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             // If we should not log...
             if (!IsEnabled(logLevel))
@@ -82,8 +83,9 @@
                 return;
             }
 
-            // Get values from the state
-            object[] values = state as object[];
+            // If message is from source, the set the message values
+            // Other wise use the generic ones provides and log only the message
+            object[] values = state as object[] ?? new object[]{$"{Path.GetFileName(typeof(TState).FileLocation())}", $"{Directory.GetCurrentDirectory()}", "0", $"{state}"};
 
             await AsyncLock.LockAsync(FileLock, () =>
             {
@@ -91,7 +93,6 @@
                 {
                     Directory.CreateDirectory(_directory);
                 }
-
                 // Create the xml file if it does not exist
                 if (!File.Exists(_filePath))
                 {
@@ -102,6 +103,7 @@
                 }
 
                 // Load the xml file
+
                 _xmlDocument = XDocument.Load(_filePath);
 
                 // Add new log to the logs
@@ -110,14 +112,14 @@
                                            new XAttribute("Date", DateTime.Now.ToString("g")),
                                            new XAttribute("Filepath", $"{values?[1]}"),
 
-                                           new XElement("Exception", new XAttribute("EventId", eventId), exception.Source),
+                                           new XElement("Exception", new XAttribute("EventId", eventId), exception?.Source),
 
                                            new XElement("Message",
                                                         new XAttribute("Origin", $"{values?[0]}"),
                                                         new XAttribute("LineNumber", $"{values?[2]}"),
                                                         $"{values?[3]}")
-                                           )
-                              );
+                                          )
+                             );
 
                 // Save the document
                 _xmlDocument.Save(_filePath);

@@ -22,7 +22,7 @@
         public FileLogger(string filePath, LoggerConfiguration configuration)
         {
             // Set members
-            _filePath = Path.GetFullPath(filePath);
+            _filePath = filePath.NormalizePath().ResolvePath();
             _directory = Path.GetDirectoryName(_filePath);
             _configuration = configuration;
         }
