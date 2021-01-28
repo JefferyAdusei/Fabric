@@ -4,10 +4,28 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <PackageId>Fabric_Jeffery</PackageId>
+    <Authors>Jeffery Adusei</Authors>
+    <Company>Xyliar</Company>
+    <Product>Fabric</Product>
+    <Description>Simple dependency injection framework, with built it File, and Xml Logger. Could be configured to work with desktop and web applicatins seamlessly.</Description>
+    <Copyright>© Xylia 2020</Copyright>
+    <PackageTags>Dependency Injection, Logger, FileLogger, XmlLogger, TaskManager</PackageTags>
+    <PackageReleaseNotes>Initial release - File Logger and Xml Loggers are baked inside the framework.</PackageReleaseNotes>
+    <Version>1.0.1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/JefferyAdusei/Fabric</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile></PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\CourseWork\Xamarin Projects\Fabric\Source\Cored\Cored.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

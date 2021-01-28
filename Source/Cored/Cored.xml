@@ -1,0 +1,1179 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cored</name>
+    </assembly>
+    <members>
+        <member name="T:Cored.Array.ArrayExtensions">
+            <summary>
+            Extension methods for arrays.
+            </summary>
+        </member>
+        <member name="M:Cored.Array.ArrayExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},``0[])">
+            <summary>
+            Appends the given objects to the original array source.
+            </summary>
+            <typeparam name="T">The specified type of the array</typeparam>
+            <param name="source">The original array of values</param>
+            <param name="toAdd">The values to append to the source.</param>
+            <returns>The concatenated array of the specified type</returns>
+        </member>
+        <member name="M:Cored.Array.ArrayExtensions.Prepend``1(``0[],``0[])">
+            <summary>
+            Prepend the given objects to the original source array
+            </summary>
+            <typeparam name="T">The specified type of the array</typeparam>
+            <param name="source">The original array of values</param>
+            <param name="toAdd">The values to append to the source.</param>
+            <returns>The prepended array of the specified type.</returns>
+        </member>
+        <member name="T:Cored.Async.AsyncLock">
+            <summary>
+            <para>
+                Adds the ability to do the same as lock(...) { } but for async
+                Tasks and awaits
+            </para>
+            <para>
+                This lock uses the lightweight semaphore slim to prevent any chance
+                of a deadlock.
+            </para>
+            </summary>
+            <example>
+                <code>
+                    await AsyncLock.LockAsync("key", () => Work());
+                </code>
+            </example>
+        </member>
+        <member name="F:Cored.Async.AsyncLock.SelfLock">
+            <summary>
+            A semaphore to lock the semaphore list
+            </summary>
+        </member>
+        <member name="F:Cored.Async.AsyncLock.Semaphores">
+            <summary>
+            A list of all semaphore locks (one per key)
+            </summary>
+        </member>
+        <member name="M:Cored.Async.AsyncLock.LockAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Int32)">
+            <summary>
+            Awaits for any outstanding tasks to complete that are accessing
+            the same key, then runs the given task, returning its value.
+            </summary>
+            <typeparam name="T">The type of the task that will be returned</typeparam>
+            <param name="key">The key to await</param>
+            <param name="task">The task to perform inside the semaphore lock</param>
+            <param name="maxAccessCount">Sets the maximum number of tasks that can access this task before waiting</param>
+            <returns>The result of the task</returns>
+        </member>
+        <member name="T:Cored.Async.WaitHandleExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Threading.WaitHandle"/>
+            </summary>
+        </member>
+        <member name="M:Cored.Async.WaitHandleExtensions.WaitHandleAsync(System.Threading.WaitHandle,System.Int32,System.Nullable{System.Threading.CancellationToken})">
+            <summary>
+            Allows awaiting a <see cref="T:System.Threading.WaitHandle"/> which
+            <inheritdoc cref="T:System.Threading.WaitHandle"/>
+            </summary>
+            <param name="handle">The <see cref="T:System.Threading.WaitHandle"/> to await.</param>
+            <param name="timeout">The timeout period in milliseconds to return false if timed out.
+                <code>
+                    // In order to use timeouts and infinitely wait till a resource is free use
+                    (int)timeout.Infinite
+                </code></param>
+            <param name="token">The cancellation token to use to throw a <see cref="T:System.Threading.Tasks.TaskCanceledException"/>
+                                if this token gets cancelled</param>
+            <returns>True if the handle is free, false if it is not</returns>
+            <exception cref="T:System.Threading.Tasks.TaskCanceledException">Throws if the cancellation token is invoked</exception>
+            <example>
+                handle.WaitHandleAsync((int)Timeout.Infinite, cancellationToken);
+            </example>
+        </member>
+        <member name="T:Cored.Environment.FabricEnvironment">
+            <inheritdoc />
+        </member>
+        <member name="P:Cored.Environment.FabricEnvironment.IsDevelopment">
+            <inheritdoc />
+        </member>
+        <member name="P:Cored.Environment.FabricEnvironment.Configuration">
+            <inheritdoc />
+        </member>
+        <member name="P:Cored.Environment.FabricEnvironment.IsMobile">
+            <inheritdoc />
+            This is a temporary, fragile check until it is officially supported
+            https://github.com/dotnet/corefx/issues/27417
+        </member>
+        <member name="P:Cored.Environment.FabricEnvironment.IsWindows">
+            <inheritdoc />
+        </member>
+        <member name="T:Cored.Environment.IFabricEnvironment">
+            <summary>
+            Details about the current fabric environment.
+            </summary>
+        </member>
+        <member name="P:Cored.Environment.IFabricEnvironment.Configuration">
+            <summary>
+            Gets the configuration of the environment, typically Development or Production
+            </summary>
+        </member>
+        <member name="P:Cored.Environment.IFabricEnvironment.IsDevelopment">
+            <summary>
+            Gets a value indicating whether application is running in development or production environment
+            </summary>
+        </member>
+        <member name="P:Cored.Environment.IFabricEnvironment.IsMobile">
+            <summary>
+            Gets a value indicating whether the application is running in a mobile platform.
+            </summary>
+        </member>
+        <member name="P:Cored.Environment.IFabricEnvironment.IsWindows">
+            <summary>
+            Gets a value indicating whether the application is running on a windows operating system
+            </summary>
+        </member>
+        <member name="T:Cored.Environment.WebHosted.ApplicationBuilderExtensions">
+            <summary>
+            Extension methods for <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>
+            </summary>
+        </member>
+        <member name="M:Cored.Environment.WebHosted.ApplicationBuilderExtensions.UseFabric(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Builds the Fabric construct and sets the Fabric.Provider from the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> interface.
+            </summary>
+            <param name="app">The application builder from the hosted environment eg. ASP.NET Core</param>
+            <returns></returns>
+        </member>
+        <member name="T:Cored.Environment.WebHosted.WebHostBuilderExtensions">
+            <summary>
+            Extension methods for <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/>
+            </summary>
+        </member>
+        <member name="M:Cored.Environment.WebHosted.WebHostBuilderExtensions.UseFabric(Microsoft.AspNetCore.Hosting.IWebHostBuilder,System.Action{Cored.Fabric.Construction.FabricConstruction})">
+            <summary>
+            Adds the Fabric construct to the ASP.NET Core application
+            </summary>
+            <param name="builder">The web host builder</param>
+            <param name="configure">Custom action to configure Fabric's construction</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Exception.ExceptionHandler.HandleError(System.Exception)">
+            <inheritdoc />
+        </member>
+        <member name="T:Cored.Exception.Interface.IExceptionHandler">
+            <summary>
+            Handles exceptions when they are caught and passed to the exception handler.
+            </summary>
+        </member>
+        <member name="M:Cored.Exception.Interface.IExceptionHandler.HandleError(System.Exception)">
+            <summary>
+            Handles the given exception
+            </summary>
+            <param name="exception">The exception to handle</param>
+        </member>
+        <member name="T:Cored.Expression.ExpressionExtension">
+            <summary>
+            Extension method for managing expressions
+            </summary>
+        </member>
+        <member name="M:Cored.Expression.ExpressionExtension.GetPropertyValue``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+            Compiles an expression and gets the functions return value.
+            </summary>
+            <typeparam name="T">The type of return value.</typeparam>
+            <param name="lambda">The expression to compile.</param>
+            <returns>Expression</returns>
+        </member>
+        <member name="M:Cored.Expression.ExpressionExtension.GetPropertyValue``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},``0)">
+            <summary>
+            Compiles an expression and gets the functions return value.
+            </summary>
+            <typeparam name="TIn">The data type of the input to the expression.</typeparam>
+            <typeparam name="TRt">The type of return value.</typeparam>
+            <param name="lambda">The expression to compile.</param>
+            <param name="input">The input to the expresion.</param>
+            <returns>The compiled expression</returns>
+        </member>
+        <member name="M:Cored.Expression.ExpressionExtension.SetPropertyValue``1(System.Linq.Expressions.Expression{System.Func{``0}},``0)">
+            <summary>
+            Sets the underlying properties value to the given value
+            from an expression that contains the property.
+            </summary>
+            <typeparam name="T">The type of value to set.</typeparam>
+            <param name="lambda">The lambda expression.</param>
+            <param name="value">The value to set the property to.</param>
+        </member>
+        <member name="M:Cored.Expression.ExpressionExtension.SetPropertyValue``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,``0)">
+            <summary>
+            Sets the underlying properties value to the given value
+            from an expression that contains the property.
+            </summary>
+            <typeparam name="TIm">The type of value to set.</typeparam>
+            <typeparam name="TIn">Data type of the input value.</typeparam>
+            <param name="lambda">The lambda expression.</param>
+            <param name="value">The value to set the property to.</param>
+            <param name="input">The input to the expression</param>
+        </member>
+        <member name="T:Cored.Fabric.Construction.FabricConstruction">
+            <summary>
+            The construction information when starting up and configuring Cored.Fabric
+            </summary>
+        </member>
+        <member name="M:Cored.Fabric.Construction.FabricConstruction.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Fabric.Construction.FabricConstruction"/> class.
+            </summary>
+            <param name="createServiceCollection">Indicates whether to create a new <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+        </member>
+        <member name="F:Cored.Fabric.Construction.FabricConstruction.Services">
+            <summary>
+            The services that will get used and compiled once the fabric is built.
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Construction.FabricConstruction.Environment">
+            <summary>
+            The environment to use.
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Construction.FabricConstruction.Configuration">
+            <summary>
+            The configuration to use.
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Construction.FabricConstruction.ServiceProvider">
+            <summary>
+            The dependency injection service provider
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Construction.FabricConstruction.ServiceCollection">
+            <summary>
+            The services that will get used and compiled once the framework is built.
+            </summary>
+        </member>
+        <member name="M:Cored.Fabric.Construction.FabricConstruction.Build(System.IServiceProvider)">
+            <summary>
+            Builds the service collection into a service provider
+            </summary>
+            <param name="provider">The given provider by the user</param>
+        </member>
+        <member name="M:Cored.Fabric.Construction.FabricConstruction.UseHostedServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Uses the given service collection in the framework.
+            Typically used in an ASP.NET Core environment where the ASP.NET
+            server has its own collection
+            </summary>
+            <param name="serviceCollection">The provided service collection</param>
+            <returns>This fabric construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Fabric.Construction.FabricConstruction.UseConfiguration(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Uses the given configuration in the framework
+            </summary>
+            <param name="configuration">The configuration to use</param>
+            <returns>This fabric construction for chaining</returns>
+        </member>
+        <member name="T:Cored.Fabric.Construction.HostedFabricConstruction">
+            <inheritdoc />
+             <summary>
+             Creates a default fabric construction containing all
+             the default configuration and services, when used inside
+             a project that has it's own service provider such as an
+             ASP.NET Core website
+             </summary>
+             <example>
+             <para>
+                 This is an example setup code for building a Fabric Construction
+                 if you include the Cored.Fabric NuGet package
+             </para>
+             <code>
+                 //  Program.cs (in BuildWebHost)
+                 // ------------------------------
+                     return WebHost.CreateDefaultBuilder()
+                         // Merge Cored Fabric into ASP.Net Core environment
+                         .UseCoredFabric(construct =&gt;
+                         {
+                             // Add file logger
+                             construct.AddFileLogger();
+                             //
+                             // NOTE: If you want to configure anything in ConfigurationBuilder just use
+                             //       ConfigureAppConfiguration(builder =&gt; {}) and then you  have
+                             //       access to Cored.Fabric.Environment and Construction at that point
+                             //       like the normal flow of Cored Fabric setup
+                             //
+                             // The last step is inside Startup Configure method to call
+                         })
+                         .UseStartup&lt;Setup&gt;()
+                         .Build();
+                 //  Startup.cs (in Configure)
+                 // ---------------------------
+                     // Use Cored Fabric
+                     app.UseFabric();
+             </code>
+             </example>
+        </member>
+        <member name="M:Cored.Fabric.Construction.HostedFabricConstruction.#ctor">
+            <inheritdoc />
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Fabric.Construction.HostedFabricConstruction" /> class.
+            </summary>
+        </member>
+        <member name="T:Cored.Fabric.Construction.LocalFabricConstruction">
+            <inheritdoc />
+            <summary>
+            Creates a default framework construction containing all
+            the default configuration and services
+            </summary>
+            <example>
+            <para>
+                This is an example setup code for building a Dna Framework Construction
+            </para>
+            <code>
+                // Build the framework adding any required services
+                Framework.Construct&lt;LocalFabricConstruction&gt;()
+                        .AddFileLogger()
+                        .Build();
+            </code>
+            </example>
+        </member>
+        <member name="M:Cored.Fabric.Construction.LocalFabricConstruction.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Fabric.Construction.LocalFabricConstruction"/> class.
+            </summary>
+        </member>
+        <member name="M:Cored.Fabric.Construction.LocalFabricConstruction.#ctor(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Fabric.Construction.LocalFabricConstruction"/> class
+            which allows user to define and configure their own <see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/>
+            </summary>
+            <param name="configureAction"><see cref="T:Microsoft.Extensions.Configuration.IConfigurationBuilder"/> for user configuration</param>
+        </member>
+        <member name="T:Cored.Fabric.Di.FabricDi">
+             <summary>
+             The core services that could be available in the Core Fabric for quick
+             and easy access anywhere in code.
+             </summary>
+             <example>
+                 <code>
+                     using static FabricDi
+            
+                     Logger.Log(Configuration["SomeSection"]);
+                 </code>
+             </example>
+        </member>
+        <member name="P:Cored.Fabric.Di.FabricDi.Configuration">
+            <summary>
+            Gets the shortcut to access the configuration
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Di.FabricDi.Logger">
+            <summary>
+            Gets the shortcut to access the registered or default logger.
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Di.FabricDi.LoggerFactory">
+            <summary>
+            Gets the shortcut to access the logger factory for creating loggers.
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Di.FabricDi.FabricEnvironment">
+            <summary>
+            Gets the shortcut to access the fabric framework environment.
+            </summary>
+        </member>
+        <member name="P:Cored.Fabric.Di.FabricDi.ExceptionHandler">
+            <summary>
+            Gets the shortcut to access the default exception handler.
+            </summary>
+        </member>
+        <member name="T:Cored.Fabric.Fabric">
+            <summary>
+            The main entry point of the Fabric library.
+            </summary>
+            <remarks>
+                <para>
+                    To use the Cored.Fabric, you need to create a new <see cref="T:Cored.Fabric.Construction.FabricConstruction"/>
+                    such as <see cref="T:Cored.Fabric.Construction.LocalFabricConstruction"/> and then add your services
+                    then finally <see cref="M:Cored.Fabric.Fabric.Build(Cored.Fabric.Construction.FabricConstruction,System.Boolean)"/> For example
+                </para>
+                <code>
+                    // Create the default framework and build it
+                    Fabric.Construct&lt;DefaultFrameworkConstruction&gt;().Build();
+                </code>
+            </remarks>
+        </member>
+        <member name="P:Cored.Fabric.Fabric.Construction">
+            <summary>
+            The fabric construction used in this application.
+            NOTE: This should be set by the consuming application at the very start of the program
+            </summary>
+            <example>
+                <code>
+                    Fabric.Construct&lt;LocalFabricConstruction&gt;();
+                </code>
+            </example>
+        </member>
+        <member name="P:Cored.Fabric.Fabric.ServiceProvider">
+            <summary>
+            Gets the dependency service provider for public consumption.
+            </summary>
+        </member>
+        <member name="M:Cored.Fabric.Fabric.Build(Cored.Fabric.Construction.FabricConstruction,System.Boolean)">
+            <summary>
+            Should be called once a Fabric Construction is finished and we want to build
+            it and start the application.
+            </summary>
+            <param name="construction"><inheritdoc cref="T:Cored.Fabric.Construction.FabricConstruction"/></param>
+            <param name="shouldLog">Indicates whether the fabric started message should be logged</param>
+        </member>
+        <member name="M:Cored.Fabric.Fabric.Build(System.IServiceProvider,System.Boolean)">
+            <summary>
+            Should be called once a Fabric Construction is finished and we want to build it and start the
+            application in a hosted environment such as ASP.NET Core where the service provider is
+            already built.
+            </summary>
+            <param name="provider">The service provider from the hosted environment.</param>
+            <param name="shouldLog">Indicates whether the fabric started message should be logged</param>
+        </member>
+        <member name="M:Cored.Fabric.Fabric.Construct``1">
+            <summary>
+            The initial call to setting up and using Fabric
+            </summary>
+            <typeparam name="T">The type of the construction to use</typeparam>
+            <returns>Construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Fabric.Fabric.Construct``1(``0)">
+            <summary>
+            The initial call to setting up and using Fabric from a hosted environment
+            </summary>
+            <typeparam name="T">The type of the construction to use</typeparam>
+            <param name="constructionInstance">The instance of the construction to use</param>
+            <returns>Construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Fabric.Fabric.Service``1">
+            <summary>
+            Shortcut to Fabric.Provider.GetService to get an injected service of type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type of the service to get</typeparam>
+            <returns>The service provider</returns>
+        </member>
+        <member name="T:Cored.Fabric.FabricExtensions">
+            <summary>
+            Extension methods for the Cored Fabric
+            </summary>
+        </member>
+        <member name="M:Cored.Fabric.FabricExtensions.AddLocalConfiguration(Cored.Fabric.Construction.FabricConstruction,System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Configures the fabric construction in the default way
+            </summary>
+            <param name="construction">The construction to configure</param>
+            <param name="configure">The custom configuration action</param>
+            <returns>Fabric construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Fabric.FabricExtensions.AddConfiguration(Cored.Fabric.Construction.FabricConstruction,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Configures a fabric construction using the provided configuration
+            </summary>
+            <param name="construction"></param>
+            <param name="configuration"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Fabric.FabricExtensions.AddLocalExceptionHandler(Cored.Fabric.Construction.FabricConstruction)">
+            <summary>
+            Inject the default exception handler into the fabric construction
+            </summary>
+            <param name="construction">The fabric construction</param>
+            <returns>The Fabric construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Fabric.FabricExtensions.AddLocalLogger(Cored.Fabric.Construction.FabricConstruction)">
+            <summary>
+            Injects the default logger into the fabric construction.
+            </summary>
+            <param name="construction">The construction</param>
+            <returns>The construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Fabric.FabricExtensions.AddLocalServices(Cored.Fabric.Construction.FabricConstruction)">
+            <summary>
+            Injects all of the default services used by Fabric for a quicker and
+            cleaner setup
+            </summary>
+            <param name="construction">The fabric construction</param>
+            <returns>The fabric construction for further chaining</returns>
+        </member>
+        <member name="T:Cored.Fabric.ServiceCollectionExtensions">
+            <summary>
+            Extension methods for <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>
+            </summary>
+        </member>
+        <member name="M:Cored.Fabric.ServiceCollectionExtensions.AddFabric(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Used in a hosted environment when using an existing set of services and configuration,
+            such as an ASP.NET Core environment.
+            </summary>
+            <param name="services">The services to use</param>
+            <returns>Fabric Construction</returns>
+        </member>
+        <member name="T:Cored.Logging.Builder">
+            <summary>
+            Extension methods for the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> implemented classes.
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.Builder.AddFile(Microsoft.Extensions.Logging.ILoggingBuilder,System.String,Cored.Logging.LoggerConfiguration)">
+            <summary>
+            Adds a new file logger to the specified path.
+            </summary>
+            <param name="builder">The log builder to add to</param>
+            <param name="path">The path of the file to write to</param>
+            <param name="configuration">The configuration to use</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Logging.Builder.AddXml(Microsoft.Extensions.Logging.ILoggingBuilder,System.String,Cored.Logging.LoggerConfiguration)">
+            <summary>
+            Adds a new xml logger to the specified path.
+            </summary>
+            <param name="builder">The log builder to add to</param>
+            <param name="path">The path of the xml file to write to</param>
+            <param name="configuration">The configuration to use</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Logging.Builder.AddFileLogger(Cored.Fabric.Construction.FabricConstruction,System.String)">
+            <summary>
+            Injects a file logger into the fabric construction
+            </summary>
+            <param name="construction">The calling fabric construction to be chained</param>
+            <param name="logPath">The path to the log file</param>
+            <returns>The fabric construction for chaining</returns>
+        </member>
+        <member name="M:Cored.Logging.Builder.AddXmlLogger(Cored.Fabric.Construction.FabricConstruction,System.String)">
+            <summary>
+            Injects an xml logger into the fabric construction
+            </summary>
+            <param name="construction">The calling fabric construction to be chained</param>
+            <param name="logPath">The path to the log file</param>
+            <returns>The fabric construction for chaining</returns>
+        </member>
+        <member name="T:Cored.Logging.File.FileLogger">
+            <inheritdoc />
+            <summary>
+            A logger that writes logs as normal text to file
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.File.FileLogger.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Logging.File.FileLogger"/> class.
+            </summary>
+            <param name="filePath">The file path to write logs to</param>
+            <param name="configuration">The configuration to use</param>
+        </member>
+        <member name="P:Cored.Logging.File.FileLogger.FileLock">
+            <summary>
+            Gets a unique key to lock file access
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLogger._filePath">
+            <summary>
+            The file path to write log to.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLogger._directory">
+            <summary>
+            The path to the directory the log file is in.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLogger._configuration">
+            <summary>
+            The log settings to use.
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.File.FileLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <summary>
+            Logs the message to file
+            </summary>
+            <typeparam name="TState">The type for the state</typeparam>
+            <param name="logLevel">The log level</param>
+            <param name="eventId">The event Id</param>
+            <param name="state">The details of the message</param>
+            <param name="exception">Any exception to add to the log</param>
+            <param name="formatter">The formatter for converting the state and exception to a message string</param>
+        </member>
+        <member name="M:Cored.Logging.File.FileLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+            <inheritdoc />
+            Enabled if the log level is the same or greater than the configuration
+        </member>
+        <member name="M:Cored.Logging.File.FileLogger.BeginScope``1(``0)">
+            <inheritdoc />
+            File loggers are not scoped so this is always null
+        </member>
+        <member name="T:Cored.Logging.File.FileLoggerProvider">
+            <inheritdoc />
+            <summary>
+            Provides the ability to create instances of <see cref="T:Microsoft.Extensions.Logging.ILogger" />
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.File.FileLoggerProvider.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Logging.File.FileLoggerProvider"/> class.
+            </summary>
+            <param name="path">The path of the file to log to</param>
+            <param name="configuration">The configuration setting to use</param>
+        </member>
+        <member name="F:Cored.Logging.File.FileLoggerProvider._filePath">
+            <summary>
+            Gets the path to the log file
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLoggerProvider._configuration">
+            <summary>
+            Gets the configuration to use when creating a <see cref="T:Cored.Logging.File.FileLogger"/>
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLoggerProvider._loggers">
+            <summary>
+            Keeps track of the loggers already created.
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.File.FileLoggerProvider.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Cored.Logging.File.FileLoggerProvider.CreateLogger(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Cored.Logging.LoggerConfiguration">
+            <summary>
+            The configuration for a <see cref="T:Microsoft.Extensions.Logging.ILogger"/> implementations
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.LoggerConfiguration.LogLevel">
+            <summary>
+            Gets or sets the level of the log that should be processed.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.LoggerConfiguration.LogTime">
+            <summary>
+            Gets or sets a value indicating whether to log time as part of the message
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.LoggerConfiguration.LogAtTop">
+            <summary>
+            Gets or sets a value indicating whether to display latest logs at the top
+            of the file.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.LoggerConfiguration.OutputLogLevel">
+            <summary>
+            Gets or sets a value indicating whether the log level should be
+            part of the log message.
+            </summary>
+        </member>
+        <member name="T:Cored.Logging.LoggerExtensions">
+            <summary>
+            Extensions for loggers implementing the <see cref="T:Microsoft.Extensions.Logging.ILogger"/> interface.
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.LoggerExtensions.LogCriticalSource(Microsoft.Extensions.Logging.ILogger,System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.String,System.String,System.Int32,System.Object[])">
+            <summary>
+            Logs a critical log message, including the source of the log
+            </summary>
+            <param name="logger">The specific ILogger calling the extension</param>
+            <param name="message">The log message</param>
+            <param name="eventId">The log event identifier</param>
+            <param name="exception">The exception that comes along with the log</param>
+            <param name="origin">The callers member/function name</param>
+            <param name="filePath">The source code file path</param>
+            <param name="lineNumber">The line number in the code file of the caller</param>
+            <param name="args">The additional arguments</param>
+        </member>
+        <member name="M:Cored.Logging.LoggerExtensions.LogTraceSource(Microsoft.Extensions.Logging.ILogger,System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.String,System.String,System.Int32,System.Object[])">
+            <summary>
+            Logs a verbose trace message, including the source of the log
+            </summary>
+            <param name="logger">The specific ILogger calling the extension</param>
+            <param name="message">The log message</param>
+            <param name="eventId">The log event identifier</param>
+            <param name="exception">The exception that comes along with the log</param>
+            <param name="origin">The callers member/function name</param>
+            <param name="filePath">The source code file path</param>
+            <param name="lineNumber">The line number in the code file of the caller</param>
+            <param name="args">The additional arguments</param>
+        </member>
+        <member name="M:Cored.Logging.LoggerExtensions.LogDebugSource(Microsoft.Extensions.Logging.ILogger,System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.String,System.String,System.Int32,System.Object[])">
+            <summary>
+            Logs a debug message, including the source of the log
+            </summary>
+            <param name="logger">The specific ILogger calling the extension</param>
+            <param name="message">The log message</param>
+            <param name="eventId">The log event identifier</param>
+            <param name="exception">The exception that comes along with the log</param>
+            <param name="origin">The callers member/function name</param>
+            <param name="filePath">The source code file path</param>
+            <param name="lineNumber">The line number in the code file of the caller</param>
+            <param name="args">The additional arguments</param>
+        </member>
+        <member name="M:Cored.Logging.LoggerExtensions.LogErrorSource(Microsoft.Extensions.Logging.ILogger,System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.String,System.String,System.Int32,System.Object[])">
+            <summary>
+            Logs an error message, including the source of the log
+            </summary>
+            <param name="logger">The specific ILogger calling the extension</param>
+            <param name="message">The log message</param>
+            <param name="eventId">The log event identifier</param>
+            <param name="exception">The exception that comes along with the log</param>
+            <param name="origin">The callers member/function name</param>
+            <param name="filePath">The source code file path</param>
+            <param name="lineNumber">The line number in the code file of the caller</param>
+            <param name="args">The additional arguments</param>
+        </member>
+        <member name="M:Cored.Logging.LoggerExtensions.LogInformationSource(Microsoft.Extensions.Logging.ILogger,System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.String,System.String,System.Int32,System.Object[])">
+            <summary>
+            Logs an informative message, including the source of the log
+            </summary>
+            <param name="logger">The specific ILogger calling the extension</param>
+            <param name="message">The log message</param>
+            <param name="eventId">The log event identifier</param>
+            <param name="exception">The exception that comes along with the log</param>
+            <param name="origin">The callers member/function name</param>
+            <param name="filePath">The source code file path</param>
+            <param name="lineNumber">The line number in the code file of the caller</param>
+            <param name="args">The additional arguments</param>
+        </member>
+        <member name="M:Cored.Logging.LoggerExtensions.LogWarningSource(Microsoft.Extensions.Logging.ILogger,System.String,Microsoft.Extensions.Logging.EventId,System.Exception,System.String,System.String,System.Int32,System.Object[])">
+            <summary>
+            Logs a warning message, including the source of the log
+            </summary>
+            <param name="logger">The specific ILogger calling the extension</param>
+            <param name="message">The log message</param>
+            <param name="eventId">The log event identifier</param>
+            <param name="exception">The exception that comes along with the log</param>
+            <param name="origin">The callers member/function name</param>
+            <param name="filePath">The source code file path</param>
+            <param name="lineNumber">The line number in the code file of the caller</param>
+            <param name="args">The additional arguments</param>
+        </member>
+        <member name="T:Cored.Logging.LoggerSourceFormatter">
+            <summary>
+            Contains extensions that formats the message including
+            the source information pulled out of the state
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.LoggerSourceFormatter.Format(System.Object[],System.Exception)">
+            <summary>
+            Formats the message including the source information pulled out of the state
+            </summary>
+            <param name="state">The state information about the log</param>
+            <param name="exception">The exception associated with the log</param>
+            <returns>The formatted message</returns>
+        </member>
+        <member name="T:Cored.Logging.PathExtensions">
+            <summary>
+            Extension method that normalizes file path based on the current OS Platform
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.PathExtensions.NormalizePath(System.String)">
+            <summary>
+            Normalizes a path based on the current operating system
+            </summary>
+            <param name="path">The path to normalize</param>
+            <returns>The normalized path</returns>
+        </member>
+        <member name="M:Cored.Logging.PathExtensions.ResolvePath(System.String)">
+            <summary>
+            Resolves any relative elements of the path to absolute
+            </summary>
+            <param name="path">The path to resolve</param>
+            <returns>The resolved path</returns>
+        </member>
+        <member name="T:Cored.Logging.Xml.XmlLogger">
+            <inheritdoc />
+            <summary>
+            A logger that writes logs to file
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLogger.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLogger"/> class.
+            </summary>
+            <param name="filePath">The file path to write logs to</param>
+            <param name="configuration">The configuration to use</param>
+        </member>
+        <member name="P:Cored.Logging.Xml.XmlLogger.FileLock">
+            <summary>
+            Gets a unique key to lock files
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLogger._filePath">
+            <summary>
+            The file path to write log to.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLogger._directory">
+            <summary>
+            The path to the directory the log file is in.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLogger._configuration">
+            <summary>
+            The log settings to use.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLogger._xmlDocument">
+            <summary>
+            The document model provided by LINQ to create xml documents
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <summary>
+            Logs the message to file
+            </summary>
+            <typeparam name="TState">The type for the state</typeparam>
+            <param name="logLevel">The log level</param>
+            <param name="eventId">The event Id</param>
+            <param name="state">The details of the message</param>
+            <param name="exception">Any exception to add to the log</param>
+            <param name="formatter">The formatter for converting the state and exception to a message string</param>
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+            <inheritdoc />
+            Enabled if the log level is the same or greater than the configuration
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLogger.BeginScope``1(``0)">
+            <inheritdoc />
+            File loggers are not scoped so this is always null
+        </member>
+        <member name="T:Cored.Logging.Xml.XmlLoggerProvider">
+            <inheritdoc />
+            <summary>
+            Provides the ability to create instances of <see cref="T:Microsoft.Extensions.Logging.ILogger" />
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLoggerProvider"/> class.
+            </summary>
+            <param name="path">The path of the file to log to</param>
+            <param name="configuration">The configuration setting to use</param>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLoggerProvider._filePath">
+            <summary>
+            Gets the path to the log file
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLoggerProvider._configuration">
+            <summary>
+            Gets the configuration to use when creating a <see cref="T:Cored.Logging.Xml.XmlLogger"/>
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Xml.XmlLoggerProvider._loggers">
+            <summary>
+            Keeps track of the loggers already created.
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.CreateLogger(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Cored.Reflection.ReflectionExtensions">
+            <summary>
+            Extension methods for reflection methods
+            </summary>
+        </member>
+        <member name="M:Cored.Reflection.ReflectionExtensions.FileLocation(System.Type)">
+            <summary>
+            Gets the physical file location of the assembly where this type is stored
+            </summary>
+            <param name="type"><inheritdoc cref="T:System.Type"/></param>
+            <returns>Returns the file location of the assembly in which this type is stored</returns>
+        </member>
+        <member name="M:Cored.Reflection.ReflectionExtensions.FolderLocation(System.Type)">
+            <summary>
+            Gets the physical folder location of the assembly where this type is stored
+            </summary>
+            <param name="type"><inheritdoc cref="T:System.Type"/></param>
+            <returns>Returns the folder location of the assembly file in which this type is stored</returns>
+        </member>
+        <member name="T:Cored.Tasks.SingleTaskWorker">
+            <summary>
+            <para>
+                Provides a thread-safe mechanism for starting and stopping the execution
+                of a task that can only have one instance of itself running regardless of the
+                amount of times start/stop is called and from what thread.
+            </para>
+            <para>
+                Supports cancellation request via the <see cref="M:Cored.Tasks.SingleTaskWorker.StopAsync"/> and the given
+                task will be provided with a cancellation token to monitor for when it should
+                "stop"
+            </para>
+            </summary>
+        </member>
+        <member name="F:Cored.Tasks.SingleTaskWorker.WorkerFinishedEvent">
+            <summary>
+            A flag indicating if the worker task is still running.
+            </summary>
+        </member>
+        <member name="F:Cored.Tasks.SingleTaskWorker.CancellationToken">
+            <summary>
+            The token used to cancel any ongoing work in order to shutdown
+            </summary>
+        </member>
+        <member name="P:Cored.Tasks.SingleTaskWorker.LockingKey">
+            <summary>
+            Gets or sets a unique ID for locking the starting and stopping calls of this class
+            </summary>
+        </member>
+        <member name="P:Cored.Tasks.SingleTaskWorker.WorkerName">
+            <summary>
+            Gets The name that identifies the worker (used in unhandled exception logs to report
+            source of an issue)
+            </summary>
+        </member>
+        <member name="P:Cored.Tasks.SingleTaskWorker.Stopping">
+            <summary>
+            Gets a value indicating whether the service is shutting down, and whether it should finish
+            what it's doing and save any important information or progress.
+            </summary>
+        </member>
+        <member name="P:Cored.Tasks.SingleTaskWorker.IsRunning">
+            <summary>
+            Gets or sets a value indicating whether the main worker task is running
+            </summary>
+        </member>
+        <member name="M:Cored.Tasks.SingleTaskWorker.StartAsync">
+            <summary>
+            Starts the given task running if it is not already running
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Tasks.SingleTaskWorker.StopAsync">
+            <summary>
+            Requests that the given task should stop running, and waits for it
+            to finish
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Tasks.SingleTaskWorker.RunWorkerTaskNoAwait">
+            <summary>
+            Runs the worker task and sets the IsRunning to false once complete
+            </summary>
+            <returns>Return once the worker task has completed</returns>
+        </member>
+        <member name="M:Cored.Tasks.SingleTaskWorker.WorkerTaskAsync(System.Threading.CancellationToken)">
+            <summary>
+            The task that will be run by this worker
+            </summary>
+            <param name="cancellationToken"><see cref="F:Cored.Tasks.SingleTaskWorker.CancellationToken"/></param>
+            <returns>An un-awaitable task</returns>
+        </member>
+        <member name="T:Cored.Web.ConnectivityChecker">
+            <summary>
+            Continually hits  up a web HTTP/HTTPS endpoint at a specified interval, checking for a valid response
+            This is particularly helpful for checking the connectivity of a website.
+            </summary>
+        </member>
+        <member name="F:Cored.Web.ConnectivityChecker._disposing">
+            <summary>
+            Gets or sets a flag indicating whether the class is disposing.
+            </summary>
+        </member>
+        <member name="P:Cored.Web.ConnectivityChecker.Responsive">
+            <summary>
+            Gets or sets a value indicating whether the endpoint is responsive
+            </summary>
+        </member>
+        <member name="M:Cored.Web.ConnectivityChecker.LinearRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.HttpWebResponse,System.Boolean})">
+            <summary>
+            Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
+            is responsive.
+            </summary>
+            <param name="endpoint">The endpoint to do a GET call on</param>
+            <param name="interval">The time between periodical checks in milliseconds</param>
+            <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
+            <param name="validResponseParser">
+                If specified, handles whether the <see cref="T:System.Net.HttpWebResponse"/> from the server should be classified
+                as successful or not.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Web.ConnectivityChecker.ExponentialRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.HttpWebResponse,System.Boolean})">
+            <summary>
+            Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
+            is responsive.
+            </summary>
+            <param name="endpoint">The endpoint to do a GET call on</param>
+            <param name="interval">The time between periodical checks in milliseconds</param>
+            <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
+            <param name="validResponseParser">
+                If specified, handles whether the <see cref="T:System.Net.HttpWebResponse"/> from the server should be classified
+                as successful or not.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Web.ConnectivityChecker.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Cored.Web.Mimes.MimeExtensions">
+            <summary>
+            Extension methods for <see cref="T:Cored.Web.Mimes.MimeTypes"/>
+            </summary>
+        </member>
+        <member name="M:Cored.Web.Mimes.MimeExtensions.ToMimeText(Cored.Web.Mimes.MimeTypes)">
+            <summary>
+            Takes a known serializer type and return the mime type associated with it
+            </summary>
+            <param name="mimeType">The serializer</param>
+            <returns>The mime text</returns>
+        </member>
+        <member name="T:Cored.Web.Mimes.MimeTypes">
+            <summary>
+            Known mime types of content that can be serialized and sent to receiver.
+            </summary>
+        </member>
+        <member name="F:Cored.Web.Mimes.MimeTypes.Json">
+            <summary>
+            Data is serialized to JSON
+            </summary>
+        </member>
+        <member name="F:Cored.Web.Mimes.MimeTypes.Xml">
+            <summary>
+            Data is serialized to XML
+            </summary>
+        </member>
+        <member name="F:Cored.Web.Mimes.MimeTypes.Yaml">
+            <summary>
+            Data is serialized to Yaml
+            </summary>
+        </member>
+        <member name="F:Cored.Web.Mimes.MimeTypes.Text">
+            <summary>
+            Data is serialized as plain text
+            </summary>
+        </member>
+        <member name="T:Cored.Web.WebRequests">
+            <summary>
+            Provides HTTP calls for sending and receiving information from a HTTP server
+            </summary>
+        </member>
+        <member name="M:Cored.Web.WebRequests.GetAsync(System.String,System.Action{System.Net.HttpWebRequest},System.String)">
+            <summary>
+            Send a GET request to an URL and returns the raw http web response
+            </summary>
+            <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.HttpWebResponse"/> stream once done</remarks>
+            <param name="url">The URL to make the request to</param>
+            <param name="configureRequest">
+                Allows caller to customize and configure the request prior to the request being sent</param>
+            <param name="bearerToken">
+                Provides the Authorization header with 'bearer token-here' for things like JWT bearer tokens
+            </param>
+            <returns>An <see cref="T:System.Net.HttpWebResponse"/></returns>
+        </member>
+        <member name="M:Cored.Web.WebRequests.PostAsync(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.HttpWebRequest},System.String)">
+            <summary>
+            Sends a POST request to an URL and returns the raw <see cref="T:System.Net.HttpWebResponse"/>
+            </summary>
+            <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.HttpWebResponse"/> once done.</remarks>
+            <param name="url">The URL to make the request to</param>
+            <param name="content">The content to post</param>
+            <param name="sendMimeType">The format to serialize the content to</param>
+            <param name="returnMimeType">The expected type of content to be returned from the server</param>
+            <param name="configureRequest">Allows caller to customize and configure the request prior to the content being written and sent</param>
+            <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
+            <returns><see cref="T:System.Net.HttpWebResponse"/></returns>
+        </member>
+        <member name="M:Cored.Web.WebRequests.PostAsync``1(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.HttpWebRequest},System.String)">
+            <summary>
+            Sends a POST request to an URL and returns a response of the expected data type <see cref="!:TResponse"/>
+            </summary>
+            <typeparam name="TResponse">Expected type of the web response</typeparam>
+            <param name="url">The URL to make the request to</param>
+            <param name="content">The content to post</param>
+            <param name="sendMimeType">The format to serialize the content to</param>
+            <param name="returnMimeType">The expected type of content to be returned from the server</param>
+            <param name="configureRequest">Allows caller to customize and configure the request prior to the content being written and sent</param>
+            <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
+            <returns>Web response of Type <see cref="!:TResponse"/>/></returns>
+        </member>
+        <member name="T:Cored.Web.WebResponse">
+            <summary>
+            A web response from a call to get generic object data from a HTTP server.
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.Successful">
+            <summary>
+            Gets a value indicating whether the call was successful.
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.ErrorMessage">
+            <summary>
+            Gets or sets the error message when a call has failed
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.StatusDescription">
+            <summary>
+            Gets or sets the status description
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.RawServerResponse">
+            <summary>
+            Gets or sets the raw server response body.
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.ContentType">
+            <summary>
+            Gets or sets the content type returned by the server
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.ResponseUri">
+            <summary>
+            Gets or sets the response uri sent by the server.
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.ServerResponse">
+            <summary>
+            Gets or sets the actual server response as an object
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.StatusCode">
+            <summary>
+            Gets or sets the values of status codes defined for HTTP
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.Headers">
+            <summary>
+            Gets or sets the collection headers associated with web request or response
+            </summary>
+        </member>
+        <member name="P:Cored.Web.WebResponse.Cookies">
+            <summary>
+            Gets or sets the collection of cookies sent in the response
+            </summary>
+        </member>
+        <member name="T:Cored.Web.WebResponse`1">
+            <inheritdoc cref="T:Cored.Web.WebResponse"/>
+            <typeparam name="T">The type of data to deserialize the raw body into</typeparam>
+        </member>
+        <member name="P:Cored.Web.WebResponse`1.ServerResponse">
+            <summary>
+            Gets or sets the server response and casts the underlying object to
+            the specified type.
+            </summary>
+        </member>
+        <member name="T:Cored.Web.WebResponseExtensions">
+            <summary>
+            Extension methods for <see cref="T:Cored.Web.WebResponse"/>
+            </summary>
+        </member>
+        <member name="M:Cored.Web.WebResponseExtensions.CreateWebResponse``1(System.Net.HttpWebResponse)">
+            <summary>
+            Returns a <see cref="T:Cored.Web.WebResponse`1"/> pre-populated with the <see cref="T:System.Net.HttpWebResponse"/> information
+            </summary>
+            <typeparam name="TResponse">The type of response to create</typeparam>
+            <param name="serverResponse">The response sent from the server</param>
+            <returns>Web response of type {TResponse}</returns>
+        </member>
+        <member name="M:Cored.Web.WebResponseExtensions.CreateWebResponseAsync``1(System.Net.HttpWebResponse)">
+            <summary>
+            Returns asynchronously a <see cref="T:Cored.Web.WebResponse`1"/> pre-populated with the <see cref="T:System.Net.HttpWebResponse"/> information
+            </summary>
+            <typeparam name="TResponse">The type of response to create</typeparam>
+            <param name="serverResponse">The response sent from the server</param>
+            <returns>Web response of type {TResponse}</returns>
+        </member>
+    </members>
+</doc>
