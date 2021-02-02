@@ -12,13 +12,15 @@
     <Copyright>© Xylia 2020</Copyright>
     <PackageTags>Dependency Injection, Logger, FileLogger, XmlLogger, TaskManager</PackageTags>
     <PackageReleaseNotes>Initial release - File Logger and Xml Loggers are baked inside the framework.</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/JefferyAdusei/Fabric</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile></PackageLicenseFile>
     <PackageProjectUrl>https://github.com/JefferyAdusei/Fabric</PackageProjectUrl>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
