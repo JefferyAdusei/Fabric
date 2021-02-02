@@ -1,7 +1,7 @@
 ﻿namespace Cored.Logging
 {
-    using Fabric.Di;
     using System.IO;
+    using System.Runtime.InteropServices;
 
     /// <summary>
     /// Extension method that normalizes file path based on the current OS Platform
@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="path">The path to normalize</param>
         /// <returns>The normalized path</returns>
-        public static string NormalizePath(this string path) => FabricDi.FabricEnvironment.IsWindows
+        public static string NormalizePath(this string path) => RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
             ? path?.Replace('/', '\\').Trim()
             : path?.Replace('\\', '/').Trim();
 

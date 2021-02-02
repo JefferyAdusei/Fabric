@@ -18,6 +18,7 @@
     <RepositoryType>github</RepositoryType>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile></PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/JefferyAdusei/Fabric</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
