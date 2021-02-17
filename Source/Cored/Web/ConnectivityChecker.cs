@@ -1,7 +1,7 @@
 ﻿namespace Cored.Web
 {
     using System;
-    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -30,13 +30,20 @@
 
         #region Connectivity Methods
 
-        public async Task<bool> PingAsync(string endpoint, Func<HttpWebResponse, bool> validResponseParser = null)
+        /// <summary>
+        /// Hits up a web HTTP/HTTPS endpoint once to determine whether the endpoint is active, just like a ping does.
+        /// </summary>
+        /// <param name="endpoint">The endpoint to do a get call on</param>
+        /// <param name="validResponseParser">
+        ///     If specified, handles whether the <see cref="HttpResponseMessage"/> from the server should be classified
+        ///     as successful or not.
+        /// </param>
+        /// <returns>A value indicating whether the endpoint is active</returns>
+        public async Task<bool> PingAsync(string endpoint, Func<HttpResponseMessage, bool> validResponseParser = null)
         {
-            HttpWebResponse webResponse = await WebRequests.GetAsync(endpoint);
+            using HttpResponseMessage webResponse = await WebRequests.GetAsync(endpoint);
 
             bool responsive = validResponseParser?.Invoke(webResponse) ?? webResponse != null;
-
-            webResponse?.Close();
 
             return responsive;
         }
@@ -49,12 +56,12 @@
         /// <param name="interval">The time between periodical checks in milliseconds</param>
         /// <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
         /// <param name="validResponseParser">
-        ///     If specified, handles whether the <see cref="HttpWebResponse"/> from the server should be classified
+        ///     If specified, handles whether the <see cref="HttpResponseMessage"/> from the server should be classified
         ///     as successful or not.
         /// </param>
-        /// <returns></returns>
+        /// <returns>A value indicating whether the endpoint is active</returns>
         public async Task LinearRetryAsync(string endpoint, TimeSpan interval, Action<bool> stateChangedCallback,
-            Func<HttpWebResponse, bool> validResponseParser = null)
+            Func<HttpResponseMessage, bool> validResponseParser = null)
         {
             while (!_disposing)
             {
@@ -63,7 +70,7 @@
                  * 401. This is because a page not found or server error actually
                  * is a server response.
                  */
-                HttpWebResponse webResponse = await WebRequests.GetAsync(endpoint);
+                using HttpResponseMessage webResponse = await WebRequests.GetAsync(endpoint);
 
                 /*
                  * If there is a valid response parser, ask it for the state based on the response
@@ -84,8 +91,6 @@
                     // Inform the action about the change in the network/connectivity
                     stateChangedCallback?.Invoke(responsive);
                 }
-                // Close the web response
-                webResponse?.Close();
 
                 // Delay for the given timespan before starting over the loop.
                 await Task.Delay(interval);
@@ -100,12 +105,12 @@
         /// <param name="interval">The time between periodical checks in milliseconds</param>
         /// <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
         /// <param name="validResponseParser">
-        ///     If specified, handles whether the <see cref="HttpWebResponse"/> from the server should be classified
+        ///     If specified, handles whether the <see cref="HttpResponseMessage"/> from the server should be classified
         ///     as successful or not.
         /// </param>
-        /// <returns></returns>
+        /// <returns>A value indicating whether the endpoint is active</returns>
         public async Task ExponentialRetryAsync(string endpoint, TimeSpan interval, Action<bool> stateChangedCallback,
-            Func<HttpWebResponse, bool> validResponseParser = null)
+            Func<HttpResponseMessage, bool> validResponseParser = null)
         {
             int exponent = 0;
 
@@ -116,7 +121,7 @@
                  * 401. This is because a page not found or server error actually
                  * is a server response.
                  */
-                HttpWebResponse webResponse = await WebRequests.GetAsync(endpoint);
+                using HttpResponseMessage webResponse = await WebRequests.GetAsync(endpoint);
 
                 /*
                  * If there is a valid response parser, ask it for the state based on the response
@@ -137,8 +142,6 @@
                     // Inform the action about the change in the network/connectivity
                     stateChangedCallback?.Invoke(responsive);
                 }
-                // Close the web response
-                webResponse?.Close();
 
                 /*
                  * For every new attempt, raise the interval by an exponential value.

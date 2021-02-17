@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net;
+    using System.Net.Http.Headers;
 
     #region Generic Response
 
@@ -15,7 +16,7 @@
         /// <summary>
         /// Gets a value indicating whether the call was successful.
         /// </summary>
-        public bool Successful => ErrorMessage == null;
+        public bool Successful { get; set; }
 
         /// <summary>
         /// Gets or sets the error message when a call has failed
@@ -55,12 +56,7 @@
         /// <summary>
         /// Gets or sets the collection headers associated with web request or response
         /// </summary>
-        public WebHeaderCollection Headers { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of cookies sent in the response
-        /// </summary>
-        public CookieCollection Cookies { get; set; }
+        public HttpResponseHeaders Headers { get; set; }
 
         #endregion
     }

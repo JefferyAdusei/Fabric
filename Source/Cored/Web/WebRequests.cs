@@ -1,63 +1,69 @@
 ﻿namespace Cored.Web
 {
+    using Fabric.Di;
+    using Logging;
+    using Mimes;
     using System;
     using System.IO;
-    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Mimes;
 
     /// <summary>
     /// Provides HTTP calls for sending and receiving information from a HTTP server
     /// </summary>
     public static class WebRequests
     {
+        #region Private Properties
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpClient"/> class.
+        /// </summary>
+        public static HttpClient HttpClient = new();
+
+        #endregion
+
         #region Get Request
 
         /// <summary>
         /// Send a GET request to an URL and returns the raw http web response
         /// </summary>
-        /// <remarks>IMPORTANT: Remember to close the returned <see cref="HttpWebResponse"/> stream once done</remarks>
+        /// <remarks>IMPORTANT: Remember to close the returned <see cref="HttpResponseMessage"/> stream once done</remarks>
         /// <param name="url">The URL to make the request to</param>
         /// <param name="configureRequest">
         ///     Allows caller to customize and configure the request prior to the request being sent</param>
         /// <param name="bearerToken">
         ///     Provides the Authorization header with 'bearer token-here' for things like JWT bearer tokens
         /// </param>
-        /// <returns>An <see cref="HttpWebResponse"/></returns>
-        public static async Task<HttpWebResponse> GetAsync(string url, Action<HttpWebRequest> configureRequest = null,
+        /// <returns>An <see cref="HttpResponseMessage"/></returns>
+        public static async Task<HttpResponseMessage> GetAsync(string url, Action<HttpRequestMessage> configureRequest = null,
             string bearerToken = null)
         {
-            // Create the web request
-            HttpWebRequest request = WebRequest.CreateHttp(url);
-
-            // Make it a GET request method
-            request.Method = WebRequestMethods.Http.Get;
+            // Set the request message
+            using HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 
             // If we have a bearer token...
             if (bearerToken != null)
             {
-                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {bearerToken}");
+                // Add the bearer token to the request
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
             }
 
-            // Any custom work
-            configureRequest?.Invoke(request);
+            // Any custom configuration on the request message.
+            configureRequest?.Invoke(requestMessage);
 
             try
             {
-                // Return the raw server response
-                return await request.GetResponseAsync() as HttpWebResponse;
+                // Return the raw server response as an HttpResponseMessage
+                return await HttpClient.SendAsync(requestMessage);
             }
-            catch (WebException exception)
+            catch (HttpRequestException exception)
             {
-                // If we got a response...
-                if (exception.Response is HttpWebResponse httpResponse)
-                {
-                    // Return the response
-                    return httpResponse;
-                }
+                // Log the exception if we have a logger
+                FabricDi.Logger?.LogErrorSource(exception.Message);
 
                 // Otherwise, we don't have any information to be able to return
                 throw;
@@ -69,116 +75,85 @@
         #region General Post Request
 
         /// <summary>
-        /// Sends a POST request to an URL and returns the raw <see cref="HttpWebResponse"/>
+        /// Sends a POST request to an URL and returns the raw <see cref="HttpResponseMessage"/>
         /// </summary>
-        /// <remarks>IMPORTANT: Remember to close the returned <see cref="HttpWebResponse"/> once done.</remarks>
+        /// <remarks>IMPORTANT: Remember to close the returned <see cref="HttpResponseMessage"/> once done.</remarks>
         /// <param name="url">The URL to make the request to</param>
         /// <param name="content">The content to post</param>
         /// <param name="sendMimeType">The format to serialize the content to</param>
         /// <param name="returnMimeType">The expected type of content to be returned from the server</param>
         /// <param name="configureRequest">Allows caller to customize and configure the request prior to the content being written and sent</param>
         /// <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
-        /// <returns><see cref="HttpWebResponse"/></returns>
-        public static async Task<HttpWebResponse> PostAsync(string url, object content = null,
+        /// <returns><see cref="HttpResponseMessage"/></returns>
+        public static async Task<HttpResponseMessage> PostAsync(string url, object content = null,
             MimeTypes sendMimeType = MimeTypes.Json,
-            MimeTypes returnMimeType = MimeTypes.Json, Action<HttpWebRequest> configureRequest = null,
+            MimeTypes returnMimeType = MimeTypes.Json, Action<HttpRequestMessage> configureRequest = null,
             string bearerToken = null)
         {
-            // Create the web request
-            HttpWebRequest request = WebRequest.CreateHttp(url);
+            // Set the request message
+            using HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
 
-            // Make it a POST request method
-            request.Method = WebRequestMethods.Http.Post;
+            // Set the response header's mime type
+            requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(returnMimeType.ToMimeText()));
 
-            // Set content type
-            request.ContentType = sendMimeType.ToMimeText();
-
-            // Set the appropriate return type
-            request.Accept = returnMimeType.ToMimeText();
-
-            // If we have a bearer token, then add it
+            // If we have a bearer token...
             if (bearerToken != null)
             {
-                // Add bearer token to header
-                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {bearerToken}");
+                // Add the bearer token to the request
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
             }
 
-            // Configure custom request
-            configureRequest?.Invoke(request);
+            // Any custom configuration on the request message.
+            configureRequest?.Invoke(requestMessage);
 
             #region Write Content
 
             // Set the content length
-            if (content == null)
-            {
-                // Set content length to 0
-                request.ContentLength = 0;
-            }
-            else
-            {
-                string contentString;
+            string contentString;
 
-                switch (sendMimeType)
+            switch (sendMimeType)
+            {
+                case MimeTypes.Json:
+
+                    // Serialize the content object into a string
+                    contentString = JsonSerializer.Serialize(content!);
+                    break;
+
+                case MimeTypes.Xml:
                 {
-                    case MimeTypes.Json:
-                        contentString = JsonSerializer.Serialize(content);
-                        break;
+                    // Create XML serializer
+                    XmlSerializer xmlSerializer = new XmlSerializer(content?.GetType()!);
 
-                    case MimeTypes.Xml:
-                        {
-                            // Create XML serializer
-                            XmlSerializer xmlSerializer = new XmlSerializer(content.GetType());
+                    // Create a string writer to receive the serialized string
+                    await using StringWriter stringWriter = new StringWriter();
 
-                            // Create a string writer to receive the serialized string
-                            await using StringWriter stringWriter = new StringWriter();
+                    // Serialize the object to a string
+                    xmlSerializer.Serialize(stringWriter, content!);
 
-                            // Serialize the object to a string
-                            xmlSerializer.Serialize(stringWriter, content);
-
-                            // Extract the string from the writer
-                            contentString = stringWriter.ToString();
-                            break;
-                        }
-                    default:
-                        return null;
+                    // Extract the string from the writer
+                    contentString = stringWriter.ToString();
+                    break;
                 }
-
-                // Get body stream...
-                await using Stream requestStream = await request.GetRequestStreamAsync();
-
-                /*
-                 * NOTE: GetRequestStreamAsync could throw with a SocketException (or an inner exception
-                 *       of SocketException)
-                 *
-                 *       However, we cannot return anything useful from this so we just let it throw out
-                 *       so the caller can handle this (the other PostAsync call for example).
-                 *
-                 *       SocketExceptions are a good indication there is no Internet, or no connection or
-                 *       firewalls blocking communication.
-                 */
-
-                // Create a stream writer from the body stream..
-                await using StreamWriter streamWriter = new StreamWriter(requestStream);
-
-                // Write content to HTTP body stream
-                await streamWriter.WriteAsync(contentString);
+                default:
+                    return null;
             }
+
+            // Set the Http
+            using HttpContent httpContent = new StringContent(contentString, Encoding.UTF8, sendMimeType.ToMimeText());
+
+            requestMessage.Content = httpContent;
 
             #endregion
 
             try
             {
                 // Return the raw server response
-                return await request.GetResponseAsync() as HttpWebResponse;
+                return await HttpClient.SendAsync(requestMessage);
             }
-            catch (WebException exception)
+            catch (HttpRequestException exception)
             {
-                // If we got a response...
-                if (exception.Response is HttpWebResponse httpWebResponse)
-                {
-                    // Return the response
-                    return httpWebResponse;
-                }
+                // Log exception
+                FabricDi.Logger?.LogErrorSource(exception.Message);
 
                 // If there is no information, throw an exception
                 throw;
@@ -202,11 +177,11 @@
         /// <returns>Web response of Type <see cref="TResponse"/>/></returns>
         public static async Task<WebResponse<TResponse>> PostAsync<TResponse>(string url, object content = null,
             MimeTypes sendMimeType = MimeTypes.Json,
-            MimeTypes returnMimeType = MimeTypes.Json, Action<HttpWebRequest> configureRequest = null,
+            MimeTypes returnMimeType = MimeTypes.Json, Action<HttpRequestMessage> configureRequest = null,
             string bearerToken = null)
         {
             // Create server response holder
-            HttpWebResponse serverResponse;
+            HttpResponseMessage serverResponse;
 
             try
             {
@@ -216,6 +191,9 @@
             }
             catch (Exception exception)
             {
+                // Log the exception
+                FabricDi.Logger?.LogErrorSource(exception.Source, exception: exception);
+
                 // If we got unexpected error, return that
                 return new WebResponse<TResponse>()
                 {
@@ -228,7 +206,7 @@
             WebResponse<TResponse> result = await serverResponse.CreateWebResponseAsync<TResponse>();
 
             // If the response status code is not 200...
-            if (result.StatusCode != HttpStatusCode.OK)
+            if (!result.Successful)
             {
                 /*
                  * Call failed
@@ -247,11 +225,11 @@
             try
             {
                 // If the server response type was not the expected type...
-                if (!serverResponse.ContentType.ToLower().Contains(returnMimeType.ToMimeText().ToLower()))
+                if (!result.ContentType.Contains(returnMimeType.ToMimeText().ToLower()))
                 {
                     // Fail due to unexpected return type
                     result.ErrorMessage =
-                        $"Server did not return data in expected type. Expected {returnMimeType.ToMimeText()}, but received {serverResponse.ContentType}";
+                        $"Server did not return data in expected type. Expected {returnMimeType.ToMimeText()}, but received {result.ContentType}";
                     return result;
                 }
 
