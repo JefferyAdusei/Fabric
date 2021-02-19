@@ -73,7 +73,7 @@
                 else
                 {
                     // Stop
-                    StopAsync();
+                    Task.Run(async () => await StopAsync());
                 }
             }
         }

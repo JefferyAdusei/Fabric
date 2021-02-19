@@ -165,7 +165,7 @@
         #region Post Request with Type
 
         /// <summary>
-        /// Sends a POST request to an URL and returns a response of the expected data type <see cref="TResponse"/>
+        /// Sends a POST request to an URL and returns a response of the expected data type TResponse
         /// </summary>
         /// <typeparam name="TResponse">Expected type of the web response</typeparam>
         /// <param name="url">The URL to make the request to</param>
@@ -174,7 +174,7 @@
         /// <param name="returnMimeType">The expected type of content to be returned from the server</param>
         /// <param name="configureRequest">Allows caller to customize and configure the request prior to the content being written and sent</param>
         /// <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
-        /// <returns>Web response of Type <see cref="TResponse"/>/></returns>
+        /// <returns>Web response of Type TResponse/></returns>
         public static async Task<WebResponse<TResponse>> PostAsync<TResponse>(string url, object content = null,
             MimeTypes sendMimeType = MimeTypes.Json,
             MimeTypes returnMimeType = MimeTypes.Json, Action<HttpRequestMessage> configureRequest = null,

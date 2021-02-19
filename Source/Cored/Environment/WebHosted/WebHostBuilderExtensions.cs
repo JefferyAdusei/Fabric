@@ -8,6 +8,7 @@
     /// <summary>
     /// Extension methods for <see cref="IWebHostBuilder"/>
     /// </summary>
+    [Obsolete("Call UseFabric on IHostBuilder instead")]
     public static class WebHostBuilderExtensions
     {
         /// <summary>

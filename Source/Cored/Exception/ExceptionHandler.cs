@@ -4,6 +4,8 @@
     using Interface;
     using Logging;
     using static Fabric.Di.FabricDi;
+
+    /// <inheritdoc />
     public class ExceptionHandler : IExceptionHandler
     {
         #region Implementation of IExceptionHandler
