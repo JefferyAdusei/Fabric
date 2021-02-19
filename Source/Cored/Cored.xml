@@ -977,21 +977,18 @@
             Gets or sets a value indicating whether the endpoint is responsive
             </summary>
         </member>
-        <member name="M:Cored.Web.ConnectivityChecker.LinearRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.HttpWebResponse,System.Boolean})">
+        <member name="M:Cored.Web.ConnectivityChecker.PingAsync(System.String,System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
             <summary>
-            Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
-            is responsive.
+            Hits up a web HTTP/HTTPS endpoint once to determine whether the endpoint is active, just like a ping does.
             </summary>
-            <param name="endpoint">The endpoint to do a GET call on</param>
-            <param name="interval">The time between periodical checks in milliseconds</param>
-            <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
+            <param name="endpoint">The endpoint to do a get call on</param>
             <param name="validResponseParser">
-                If specified, handles whether the <see cref="T:System.Net.HttpWebResponse"/> from the server should be classified
+                If specified, handles whether the <see cref="T:System.Net.Http.HttpResponseMessage"/> from the server should be classified
                 as successful or not.
             </param>
-            <returns></returns>
+            <returns>A value indicating whether the endpoint is active</returns>
         </member>
-        <member name="M:Cored.Web.ConnectivityChecker.ExponentialRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.HttpWebResponse,System.Boolean})">
+        <member name="M:Cored.Web.ConnectivityChecker.LinearRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
             <summary>
             Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
             is responsive.
@@ -1000,10 +997,24 @@
             <param name="interval">The time between periodical checks in milliseconds</param>
             <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
             <param name="validResponseParser">
-                If specified, handles whether the <see cref="T:System.Net.HttpWebResponse"/> from the server should be classified
+                If specified, handles whether the <see cref="T:System.Net.Http.HttpResponseMessage"/> from the server should be classified
                 as successful or not.
             </param>
-            <returns></returns>
+            <returns>A value indicating whether the endpoint is active</returns>
+        </member>
+        <member name="M:Cored.Web.ConnectivityChecker.ExponentialRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
+            <summary>
+            Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
+            is responsive.
+            </summary>
+            <param name="endpoint">The endpoint to do a GET call on</param>
+            <param name="interval">The time between periodical checks in milliseconds</param>
+            <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
+            <param name="validResponseParser">
+                If specified, handles whether the <see cref="T:System.Net.Http.HttpResponseMessage"/> from the server should be classified
+                as successful or not.
+            </param>
+            <returns>A value indicating whether the endpoint is active</returns>
         </member>
         <member name="M:Cored.Web.ConnectivityChecker.Dispose">
             <inheritdoc />
@@ -1050,33 +1061,38 @@
             Provides HTTP calls for sending and receiving information from a HTTP server
             </summary>
         </member>
-        <member name="M:Cored.Web.WebRequests.GetAsync(System.String,System.Action{System.Net.HttpWebRequest},System.String)">
+        <member name="F:Cored.Web.WebRequests.HttpClient">
+            <summary>
+            Initializes a new instance of the <see cref="F:Cored.Web.WebRequests.HttpClient"/> class.
+            </summary>
+        </member>
+        <member name="M:Cored.Web.WebRequests.GetAsync(System.String,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
             Send a GET request to an URL and returns the raw http web response
             </summary>
-            <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.HttpWebResponse"/> stream once done</remarks>
+            <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.Http.HttpResponseMessage"/> stream once done</remarks>
             <param name="url">The URL to make the request to</param>
             <param name="configureRequest">
                 Allows caller to customize and configure the request prior to the request being sent</param>
             <param name="bearerToken">
                 Provides the Authorization header with 'bearer token-here' for things like JWT bearer tokens
             </param>
-            <returns>An <see cref="T:System.Net.HttpWebResponse"/></returns>
+            <returns>An <see cref="T:System.Net.Http.HttpResponseMessage"/></returns>
         </member>
-        <member name="M:Cored.Web.WebRequests.PostAsync(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.HttpWebRequest},System.String)">
+        <member name="M:Cored.Web.WebRequests.PostAsync(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
-            Sends a POST request to an URL and returns the raw <see cref="T:System.Net.HttpWebResponse"/>
+            Sends a POST request to an URL and returns the raw <see cref="T:System.Net.Http.HttpResponseMessage"/>
             </summary>
-            <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.HttpWebResponse"/> once done.</remarks>
+            <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.Http.HttpResponseMessage"/> once done.</remarks>
             <param name="url">The URL to make the request to</param>
             <param name="content">The content to post</param>
             <param name="sendMimeType">The format to serialize the content to</param>
             <param name="returnMimeType">The expected type of content to be returned from the server</param>
             <param name="configureRequest">Allows caller to customize and configure the request prior to the content being written and sent</param>
             <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
-            <returns><see cref="T:System.Net.HttpWebResponse"/></returns>
+            <returns><see cref="T:System.Net.Http.HttpResponseMessage"/></returns>
         </member>
-        <member name="M:Cored.Web.WebRequests.PostAsync``1(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.HttpWebRequest},System.String)">
+        <member name="M:Cored.Web.WebRequests.PostAsync``1(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
             Sends a POST request to an URL and returns a response of the expected data type <see cref="!:TResponse"/>
             </summary>
@@ -1139,11 +1155,6 @@
             Gets or sets the collection headers associated with web request or response
             </summary>
         </member>
-        <member name="P:Cored.Web.WebResponse.Cookies">
-            <summary>
-            Gets or sets the collection of cookies sent in the response
-            </summary>
-        </member>
         <member name="T:Cored.Web.WebResponse`1">
             <inheritdoc cref="T:Cored.Web.WebResponse"/>
             <typeparam name="T">The type of data to deserialize the raw body into</typeparam>
@@ -1159,17 +1170,9 @@
             Extension methods for <see cref="T:Cored.Web.WebResponse"/>
             </summary>
         </member>
-        <member name="M:Cored.Web.WebResponseExtensions.CreateWebResponse``1(System.Net.HttpWebResponse)">
+        <member name="M:Cored.Web.WebResponseExtensions.CreateWebResponseAsync``1(System.Net.Http.HttpResponseMessage)">
             <summary>
-            Returns a <see cref="T:Cored.Web.WebResponse`1"/> pre-populated with the <see cref="T:System.Net.HttpWebResponse"/> information
-            </summary>
-            <typeparam name="TResponse">The type of response to create</typeparam>
-            <param name="serverResponse">The response sent from the server</param>
-            <returns>Web response of type {TResponse}</returns>
-        </member>
-        <member name="M:Cored.Web.WebResponseExtensions.CreateWebResponseAsync``1(System.Net.HttpWebResponse)">
-            <summary>
-            Returns asynchronously a <see cref="T:Cored.Web.WebResponse`1"/> pre-populated with the <see cref="T:System.Net.HttpWebResponse"/> information
+            Returns a <see cref="T:Cored.Web.WebResponse`1"/> pre-populated with the <see cref="T:System.Net.Http.HttpResponseMessage"/> information
             </summary>
             <typeparam name="TResponse">The type of response to create</typeparam>
             <param name="serverResponse">The response sent from the server</param>

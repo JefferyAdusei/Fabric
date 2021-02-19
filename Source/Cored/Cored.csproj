@@ -8,19 +8,19 @@
     <Authors>Jeffery Adusei</Authors>
     <Company>Xyliar</Company>
     <Product>Fabric</Product>
-    <Description>Simple dependency injection framework, with built it File, and Xml Logger. Could be configured to work with desktop and web applicatins seamlessly.</Description>
+    <Description>Simple dependency injection framework, with built it File, and Xml Logger. Could be configured to work with desktop and web applicatins seamlessly. Includes ability to make xml and json web api calls without having to serialize or deserialize the request and responses.</Description>
     <Copyright>© Xylia 2020</Copyright>
     <PackageTags>Dependency Injection, Logger, FileLogger, XmlLogger, TaskManager</PackageTags>
     <PackageReleaseNotes>Initial release - File Logger and Xml Loggers are baked inside the framework.</PackageReleaseNotes>
-    <Version>1.0.2</Version>
+    <Version>1.1.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/JefferyAdusei/Fabric</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile></PackageLicenseFile>
     <PackageProjectUrl>https://github.com/JefferyAdusei/Fabric</PackageProjectUrl>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <AssemblyVersion>1.1.2.0</AssemblyVersion>
+    <FileVersion>1.1.2.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -49,6 +49,7 @@
 
   <ItemGroup>
     <Folder Include="Array\" />
+    <Folder Include="Environment\Hosted\" />
     <Folder Include="Fabric\Di\" />
     <Folder Include="Logging\Interfaces\" />
     <Folder Include="Logging\Json\" />

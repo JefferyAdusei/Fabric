@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="ArrayTests\" />
+    <Folder Include="WebTests\" />
   </ItemGroup>
 
   <ItemGroup>
