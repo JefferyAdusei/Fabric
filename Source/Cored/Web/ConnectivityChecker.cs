@@ -33,15 +33,16 @@
         /// <summary>
         /// Hits up a web HTTP/HTTPS endpoint once to determine whether the endpoint is active, just like a ping does.
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="endpoint">The endpoint to do a get call on</param>
         /// <param name="validResponseParser">
         ///     If specified, handles whether the <see cref="HttpResponseMessage"/> from the server should be classified
         ///     as successful or not.
         /// </param>
         /// <returns>A value indicating whether the endpoint is active</returns>
-        public async Task<bool> PingAsync(string endpoint, Func<HttpResponseMessage, bool> validResponseParser = null)
+        public async Task<bool> PingAsync(HttpClient client, string endpoint, Func<HttpResponseMessage, bool> validResponseParser = null)
         {
-            using HttpResponseMessage webResponse = await WebRequests.GetAsync(endpoint);
+            using HttpResponseMessage webResponse = await client.GetAsync(endpoint);
 
             bool responsive = validResponseParser?.Invoke(webResponse) ?? webResponse != null;
 
@@ -52,6 +53,7 @@
         /// Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
         /// is responsive.
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="endpoint">The endpoint to do a GET call on</param>
         /// <param name="interval">The time between periodical checks in milliseconds</param>
         /// <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
@@ -60,7 +62,7 @@
         ///     as successful or not.
         /// </param>
         /// <returns>A value indicating whether the endpoint is active</returns>
-        public async Task LinearRetryAsync(string endpoint, TimeSpan interval, Action<bool> stateChangedCallback,
+        public async Task LinearRetryAsync(HttpClient client, string endpoint, TimeSpan interval, Action<bool> stateChangedCallback,
             Func<HttpResponseMessage, bool> validResponseParser = null)
         {
             while (!_disposing)
@@ -70,7 +72,7 @@
                  * 401. This is because a page not found or server error actually
                  * is a server response.
                  */
-                using HttpResponseMessage webResponse = await WebRequests.GetAsync(endpoint);
+                using HttpResponseMessage webResponse = await client.GetAsync(endpoint);
 
                 /*
                  * If there is a valid response parser, ask it for the state based on the response
@@ -101,6 +103,7 @@
         /// Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
         /// is responsive.
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="endpoint">The endpoint to do a GET call on</param>
         /// <param name="interval">The time between periodical checks in milliseconds</param>
         /// <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
@@ -109,7 +112,7 @@
         ///     as successful or not.
         /// </param>
         /// <returns>A value indicating whether the endpoint is active</returns>
-        public async Task ExponentialRetryAsync(string endpoint, TimeSpan interval, Action<bool> stateChangedCallback,
+        public async Task ExponentialRetryAsync(HttpClient client, string endpoint, TimeSpan interval, Action<bool> stateChangedCallback,
             Func<HttpResponseMessage, bool> validResponseParser = null)
         {
             int exponent = 0;
@@ -121,7 +124,7 @@
                  * 401. This is because a page not found or server error actually
                  * is a server response.
                  */
-                using HttpResponseMessage webResponse = await WebRequests.GetAsync(endpoint);
+                using HttpResponseMessage webResponse = await client.GetAsync(endpoint);
 
                 /*
                  * If there is a valid response parser, ask it for the state based on the response

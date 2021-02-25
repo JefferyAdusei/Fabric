@@ -1,22 +1,31 @@
-﻿namespace UnitTests.WebTests
+﻿using System.Net.Http;
+
+namespace UnitTests.WebTests
 {
     using Cored.Web;
     using Xunit;
 
     public class ConnectivityCheckerTest
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets the HttpClient that would be used in making all requests.
+        /// </summary>
+        private static readonly HttpClient HttpClient = new HttpClient();
+
+        #endregion
+
         [Theory]
         [InlineData("https://google.com")]
         [InlineData("https://thioneshouldntworkatall.com")]
         public async void Ping_Okay(string url)
         {
-            bool ok;
-
             using ConnectivityChecker checker = new ConnectivityChecker();
 
-            ok = await checker.PingAsync(url);
+            var ok = await checker.PingAsync(HttpClient, url);
 
-            Assert.Equal(true, ok);
+            Assert.True(ok);
         }
     }
 }

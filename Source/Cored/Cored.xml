@@ -144,31 +144,6 @@
             Gets a value indicating whether the application is running on a windows operating system
             </summary>
         </member>
-        <member name="T:Cored.Environment.WebHosted.ApplicationBuilderExtensions">
-            <summary>
-            Extension methods for <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>
-            </summary>
-        </member>
-        <member name="M:Cored.Environment.WebHosted.ApplicationBuilderExtensions.UseFabric(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-            Builds the Fabric construct and sets the Fabric.Provider from the <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> interface.
-            </summary>
-            <param name="app">The application builder from the hosted environment eg. ASP.NET Core</param>
-            <returns></returns>
-        </member>
-        <member name="T:Cored.Environment.WebHosted.WebHostBuilderExtensions">
-            <summary>
-            Extension methods for <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/>
-            </summary>
-        </member>
-        <member name="M:Cored.Environment.WebHosted.WebHostBuilderExtensions.UseFabric(Microsoft.AspNetCore.Hosting.IWebHostBuilder,System.Action{Cored.Fabric.Construction.FabricConstruction})">
-            <summary>
-            Adds the Fabric construct to the ASP.NET Core application
-            </summary>
-            <param name="builder">The web host builder</param>
-            <param name="configure">Custom action to configure Fabric's construction</param>
-            <returns></returns>
-        </member>
         <member name="T:Cored.Exception.ExceptionHandler">
             <inheritdoc />
         </member>
@@ -993,10 +968,11 @@
             Gets or sets a value indicating whether the endpoint is responsive
             </summary>
         </member>
-        <member name="M:Cored.Web.ConnectivityChecker.PingAsync(System.String,System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
+        <member name="M:Cored.Web.ConnectivityChecker.PingAsync(System.Net.Http.HttpClient,System.String,System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
             <summary>
             Hits up a web HTTP/HTTPS endpoint once to determine whether the endpoint is active, just like a ping does.
             </summary>
+            <param name="client"></param>
             <param name="endpoint">The endpoint to do a get call on</param>
             <param name="validResponseParser">
                 If specified, handles whether the <see cref="T:System.Net.Http.HttpResponseMessage"/> from the server should be classified
@@ -1004,11 +980,12 @@
             </param>
             <returns>A value indicating whether the endpoint is active</returns>
         </member>
-        <member name="M:Cored.Web.ConnectivityChecker.LinearRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
+        <member name="M:Cored.Web.ConnectivityChecker.LinearRetryAsync(System.Net.Http.HttpClient,System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
             <summary>
             Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
             is responsive.
             </summary>
+            <param name="client"></param>
             <param name="endpoint">The endpoint to do a GET call on</param>
             <param name="interval">The time between periodical checks in milliseconds</param>
             <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
@@ -1018,11 +995,12 @@
             </param>
             <returns>A value indicating whether the endpoint is active</returns>
         </member>
-        <member name="M:Cored.Web.ConnectivityChecker.ExponentialRetryAsync(System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
+        <member name="M:Cored.Web.ConnectivityChecker.ExponentialRetryAsync(System.Net.Http.HttpClient,System.String,System.TimeSpan,System.Action{System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean})">
             <summary>
             Hits up a web HTTP/HTTPS endpoint continually at a given interval to determine whether the server
             is responsive.
             </summary>
+            <param name="client"></param>
             <param name="endpoint">The endpoint to do a GET call on</param>
             <param name="interval">The time between periodical checks in milliseconds</param>
             <param name="stateChangedCallback">Fired when the endpoint state changes (responsive/not responsive)</param>
@@ -1077,16 +1055,12 @@
             Provides HTTP calls for sending and receiving information from a HTTP server
             </summary>
         </member>
-        <member name="F:Cored.Web.WebRequests.HttpClient">
-            <summary>
-            Initializes a new instance of the <see cref="F:Cored.Web.WebRequests.HttpClient"/> class.
-            </summary>
-        </member>
-        <member name="M:Cored.Web.WebRequests.GetAsync(System.String,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
+        <member name="M:Cored.Web.WebRequests.GetAsync(System.Net.Http.HttpClient,System.String,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
             Send a GET request to an URL and returns the raw http web response
             </summary>
             <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.Http.HttpResponseMessage"/> stream once done</remarks>
+            <param name="client"></param>
             <param name="url">The URL to make the request to</param>
             <param name="configureRequest">
                 Allows caller to customize and configure the request prior to the request being sent</param>
@@ -1095,11 +1069,12 @@
             </param>
             <returns>An <see cref="T:System.Net.Http.HttpResponseMessage"/></returns>
         </member>
-        <member name="M:Cored.Web.WebRequests.PostAsync(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
+        <member name="M:Cored.Web.WebRequests.PostAsync(System.Net.Http.HttpClient,System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
             Sends a POST request to an URL and returns the raw <see cref="T:System.Net.Http.HttpResponseMessage"/>
             </summary>
             <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.Http.HttpResponseMessage"/> once done.</remarks>
+            <param name="client"></param>
             <param name="url">The URL to make the request to</param>
             <param name="content">The content to post</param>
             <param name="sendMimeType">The format to serialize the content to</param>
@@ -1108,11 +1083,12 @@
             <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
             <returns><see cref="T:System.Net.Http.HttpResponseMessage"/></returns>
         </member>
-        <member name="M:Cored.Web.WebRequests.PostAsync``1(System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
+        <member name="M:Cored.Web.WebRequests.PostAsync``1(System.Net.Http.HttpClient,System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
             Sends a POST request to an URL and returns a response of the expected data type TResponse
             </summary>
             <typeparam name="TResponse">Expected type of the web response</typeparam>
+            <param name="client"></param>
             <param name="url">The URL to make the request to</param>
             <param name="content">The content to post</param>
             <param name="sendMimeType">The format to serialize the content to</param>

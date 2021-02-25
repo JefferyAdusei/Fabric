@@ -18,8 +18,6 @@
                 MimeTypes.Json => "application/json",
                 // XML
                 MimeTypes.Xml => "application/xml",
-                // YAML
-                MimeTypes.Yaml => "application/yaml",
                 // Text
                 MimeTypes.Text => "application/text",
                 // Default

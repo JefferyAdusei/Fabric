@@ -16,11 +16,6 @@
         Xml,
 
         /// <summary>
-        /// Data is serialized to Yaml
-        /// </summary>
-        Yaml,
-
-        /// <summary>
         /// Data is serialized as plain text
         /// </summary>
         Text
