@@ -1,4 +1,6 @@
-﻿namespace Cored.Web
+﻿using System.Net;
+
+namespace Cored.Web
 {
     using Fabric.Di;
     using Logging;
@@ -121,7 +123,7 @@
             }
 
             // If we have no content to deserialize...
-            if (string.IsNullOrEmpty(result.RawServerResponse))
+            if (result.RawServerResponse.Length <= 0)
             {
                 return result;
             }
@@ -142,7 +144,10 @@
                 {
                     // JSON
                     case MimeTypes.Json:
-                        result.ServerResponse = JsonSerializer.Deserialize<TResponse>(result.RawServerResponse);
+                        await using (result.RawServerResponse)
+                        {
+                            result.ServerResponse = await JsonSerializer.DeserializeAsync<TResponse>(result.RawServerResponse);
+                        }
                         break;
 
                     // XML
@@ -151,11 +156,11 @@
                             // Create XML serializer
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(TResponse));
 
-                            // Create a memory stream for the raw string data
-                            await using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(result.RawServerResponse));
-
-                            // Deserialize XML string
-                            result.ServerResponse = (TResponse) xmlSerializer.Deserialize(memoryStream);
+                            await using (result.RawServerResponse)
+                            {
+                                // Deserialize XML string
+                                result.ServerResponse = (TResponse) xmlSerializer.Deserialize(result.RawServerResponse);
+                            }
 
                             break;
                         }
@@ -271,10 +276,24 @@
             catch (HttpRequestException exception)
             {
                 // Log exception
-                FabricDi.Logger?.LogErrorSource(exception.Message);
+                FabricDi.Logger?.LogErrorSource(exception.Message, exception: exception);
 
                 // If there is no information, throw an exception
-                throw;
+                return new HttpResponseMessage(HttpStatusCode.UnsupportedMediaType);
+            }
+            catch (ArgumentNullException exception)
+            {
+                // Log exception
+                FabricDi.Logger?.LogErrorSource(exception.Message, exception:exception);
+
+                return new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+            }
+            catch (InvalidOperationException exception)
+            {
+                // Log exception
+                FabricDi.Logger?.LogErrorSource(exception.Message, exception:exception);
+
+                return new HttpResponseMessage(HttpStatusCode.PreconditionRequired);
             }
         }
 
@@ -314,7 +333,7 @@
                 FabricDi.Logger?.LogErrorSource(exception.Source, exception: exception);
 
                 // If we got unexpected error, return that
-                return new WebResponse<TResponse>()
+                return new WebResponse<TResponse>
                 {
                     // Include exception message
                     ErrorMessage = exception.Message
@@ -335,7 +354,7 @@
             }
 
             // If we have no content to deserialize...
-            if (string.IsNullOrEmpty(result.RawServerResponse))
+            if (result.RawServerResponse.Length <= 0)
             {
                 return result;
             }
@@ -356,23 +375,28 @@
                 {
                     // JSON
                     case MimeTypes.Json:
-                        result.ServerResponse = JsonSerializer.Deserialize<TResponse>(result.RawServerResponse);
+
+                        await using (result.RawServerResponse)
+                        {
+                            result.ServerResponse = await JsonSerializer.DeserializeAsync<TResponse>(result.RawServerResponse);
+                        }
+
                         break;
 
                     // XML
                     case MimeTypes.Xml:
+                    {
+                        // Create XML serializer
+                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(TResponse));
+
+                        await using (result.RawServerResponse)
                         {
-                            // Create XML serializer
-                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(TResponse));
-
-                            // Create a memory stream for the raw string data
-                            await using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(result.RawServerResponse));
-
                             // Deserialize XML string
-                            result.ServerResponse = (TResponse) xmlSerializer.Deserialize(memoryStream);
-
-                            break;
+                            result.ServerResponse = (TResponse) xmlSerializer.Deserialize(result.RawServerResponse);
                         }
+
+                        break;
+                    }
 
                     // TEXT
                     case MimeTypes.Text:
@@ -380,14 +404,24 @@
 
                     // UNKNOWN
                     default:
-                        {
-                            // If deserialize failed, then set error message
-                            result.ErrorMessage =
-                                "Unknown return type, cannot deserialize server response to the expected type";
+                    {
+                        // If deserialize failed, then set error message
+                        result.ErrorMessage =
+                            "Unknown return type, cannot deserialize server response to the expected type";
 
-                            return result;
-                        }
+                        return result;
+                    }
                 }
+            }
+            catch (JsonException exception)
+            {
+                // Log the error.
+                FabricDi.Logger.LogErrorSource($"An error occurred while deserializing{nameof(TResponse)}", exception: exception);
+
+                // If deserializing JSON failed, then set JSON Exception
+                result.ErrorMessage = exception.Message;
+
+                return result;
             }
             catch (Exception exception)
             {

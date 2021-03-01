@@ -20,7 +20,7 @@
         public static async Task<WebResponse<TResponse>> CreateWebResponseAsync<TResponse>(this HttpResponseMessage serverResponse)
         {
             // Return a new web request result
-            WebResponse<TResponse> result = new WebResponse<TResponse>()
+            WebResponse<TResponse> result = new WebResponse<TResponse>
             {
                 Successful = serverResponse.IsSuccessStatusCode,
 
@@ -52,17 +52,19 @@
             }
 
             // Open the response stream...
-            await using Stream responseStream = await serverResponse.Content.ReadAsStreamAsync();
+            //await using Stream responseStream = await serverResponse.Content.ReadAsStreamAsync();
 
             // Get a read stream
-            using StreamReader streamReader = new StreamReader(responseStream!);
+            //using StreamReader streamReader = new StreamReader(responseStream!);
 
             /*
              * Read in the response body
              * NOTE: By reading to the end of the stream, the stream will also close
              *       for us (which we must do to release the request)
              */
-            result.RawServerResponse = await streamReader.ReadToEndAsync();
+
+            result.RawServerResponse = await serverResponse.Content.ReadAsStreamAsync();
+            //result.RawServerResponse = await streamReader.ReadToEndAsync();
 
             return result;
         }

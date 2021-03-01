@@ -1,4 +1,6 @@
-﻿namespace Cored.Web
+﻿using System.IO;
+
+namespace Cored.Web
 {
     using System;
     using System.Net;
@@ -31,7 +33,7 @@
         /// <summary>
         /// Gets or sets the raw server response body.
         /// </summary>
-        public string RawServerResponse { get; set; }
+        public Stream RawServerResponse { get; set; }
 
         /// <summary>
         /// Gets or sets the content type returned by the server

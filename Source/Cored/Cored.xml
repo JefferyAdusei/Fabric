@@ -1040,11 +1040,6 @@
             Data is serialized to XML
             </summary>
         </member>
-        <member name="F:Cored.Web.Mimes.MimeTypes.Yaml">
-            <summary>
-            Data is serialized to Yaml
-            </summary>
-        </member>
         <member name="F:Cored.Web.Mimes.MimeTypes.Text">
             <summary>
             Data is serialized as plain text
@@ -1055,19 +1050,32 @@
             Provides HTTP calls for sending and receiving information from a HTTP server
             </summary>
         </member>
-        <member name="M:Cored.Web.WebRequests.GetAsync(System.Net.Http.HttpClient,System.String,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
+        <member name="M:Cored.Web.WebRequests.GetAsync(System.Net.Http.HttpClient,System.String,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
             Send a GET request to an URL and returns the raw http web response
             </summary>
             <remarks>IMPORTANT: Remember to close the returned <see cref="T:System.Net.Http.HttpResponseMessage"/> stream once done</remarks>
             <param name="client"></param>
             <param name="url">The URL to make the request to</param>
+            <param name="returnMimeType">The format to deserialize the content of the response into.</param>
             <param name="configureRequest">
                 Allows caller to customize and configure the request prior to the request being sent</param>
             <param name="bearerToken">
                 Provides the Authorization header with 'bearer token-here' for things like JWT bearer tokens
             </param>
             <returns>An <see cref="T:System.Net.Http.HttpResponseMessage"/></returns>
+        </member>
+        <member name="M:Cored.Web.WebRequests.GetAsync``1(System.Net.Http.HttpClient,System.String,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
+            <summary>
+            Sends a POST request to an URL and returns a response of the expected data type TResponse
+            </summary>
+            <typeparam name="TResponse">Expected type of the web response</typeparam>
+            <param name="client"></param>
+            <param name="url">The URL to make the request to</param>
+            <param name="returnMimeType">The expected type of content to be returned from the server</param>
+            <param name="configureRequest">Allows caller to customize and configure the request prior to the content being written and sent</param>
+            <param name="bearerToken">Provides the Authorization header with 'Bearer {token}' for JWT bearer tokens</param>
+            <returns>Web response of Type TResponse/></returns>
         </member>
         <member name="M:Cored.Web.WebRequests.PostAsync(System.Net.Http.HttpClient,System.String,System.Object,Cored.Web.Mimes.MimeTypes,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">
             <summary>
