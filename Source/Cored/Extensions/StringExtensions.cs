@@ -1,15 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-
-namespace Cored.Array
+namespace Cored.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+
+    /// <summary>
+    /// Extension method for manipulating strings
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>
@@ -17,7 +20,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="s">string</param>
         /// <returns>true/false</returns>
-        public static bool IsNullOrEmpty(this string s) 
+        public static bool IsNullOrEmpty(this string s)
             => string.IsNullOrEmpty(s);
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="s">string</param>
         /// <returns>true/false</returns>
-        public static bool IsNullOrWhiteSpace(this string s) 
+        public static bool IsNullOrWhiteSpace(this string s)
             => string.IsNullOrWhiteSpace(s);
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static bool IsDigit(this char c) 
+        public static bool IsDigit(this char c)
             => c >= '0' && c <= '9';
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static bool IsNumber(this string s) 
+        public static bool IsNumber(this string s)
             => double.TryParse(s, out _);
 
         /// <summary>
@@ -67,9 +70,9 @@ namespace Cored.Array
             if (s.IsNullOrEmpty())
                 return false;
 
-            Regex reg_exp = new Regex("[^a-zA-Z0-9]", RegexOptions.Compiled);
+            Regex regExp = new Regex("[^a-zA-Z0-9]", RegexOptions.Compiled);
 
-            return !reg_exp.IsMatch(s); ;
+            return !regExp.IsMatch(s);
         }
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static bool IsValidURL(this string s)
+        public static bool IsValidUrl(this string s)
         {
             if (s.IsNullOrEmpty())
                 return false;
@@ -85,7 +88,7 @@ namespace Cored.Array
             if (s.IsNullOrWhiteSpace())
                 return false;
 
-            return Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out Uri uriResult);
+            return Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out _);
         }
 
         /// <summary>
@@ -93,7 +96,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static string IfNullReturnEmptyString(this string s) 
+        public static string IfNullReturnEmptyString(this string s)
             => s ?? string.Empty;
 
 
@@ -193,9 +196,8 @@ namespace Cored.Array
 
             // Use regular expressions to replace characters
             // that are not letters or numbers with spaces.
-            Regex reg_exp = new Regex("[^a-zA-Z0-9]");
-            return reg_exp.Replace(s, string.Empty).ToCleanString();
-
+            Regex regExp = new Regex("[^a-zA-Z0-9]");
+            return regExp.Replace(s, string.Empty).ToCleanString();
         }
 
         /// <summary>
@@ -214,7 +216,7 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// To N Number of Charachters Abbreviation
+        /// To N Number of Characters Abbreviation
         /// </summary>
         /// <param name="s"></param>
         /// <param name="n"></param>
@@ -255,21 +257,20 @@ namespace Cored.Array
 
             // Use regular expressions to replace characters
             // that are not letters or numbers with spaces.
-            Regex reg_exp = new Regex("[^a-zA-Z0-9]");
-            s = reg_exp.Replace(s, " ");
+            Regex regExp = new Regex("[^a-zA-Z0-9]");
+            s = regExp.Replace(s, " ");
 
             // Split the text into words.
             string[] words = s.Split(
-                new char[] { ' ' },
+                new[] {' '},
                 StringSplitOptions.RemoveEmptyEntries);
 
-            var word_query =
+            var wordQuery =
                 (from string word in words
                  orderby word
                  select word).Distinct();
 
-            return word_query.ToList();
-
+            return wordQuery.ToList();
         }
 
         /// <summary>
@@ -318,9 +319,9 @@ namespace Cored.Array
         /// Returns Sentence Case of a text
         /// </summary>
         /// <param name="s"></param>
-        /// <param name="seperator"></param>
+        /// <param name="separator"></param>
         /// <returns></returns>
-        public static string ToSentenceCase(this string s, char seperator)
+        public static string ToSentenceCase(this string s, char separator)
         {
             if (s.IsNullOrEmpty())
                 return s;
@@ -329,21 +330,21 @@ namespace Cored.Array
             if (s.IsNullOrEmpty())
                 return s;
 
-            // Only 1 seperator
-            if (s.IndexOf(seperator) < 0)
+            // Only 1 separator
+            if (s.IndexOf(separator) < 0)
             {
                 s = s.ToLower();
                 s = s[0].ToString().ToUpper() + s.Substring(1);
                 return s;
             }
 
-            if (s.Trim().Last() == seperator)
+            if (s.Trim().Last() == separator)
             {
-                s.Trim().Remove(s.Length - 1, 1);
+                s = s.Trim().Remove(s.Length - 1, 1);
             }
 
-            // More than 1 seperator.
-            string[] sentences = s.Split(seperator);
+            // More than 1 separator.
+            string[] sentences = s.Split(separator);
             StringBuilder buffer = new StringBuilder();
 
             foreach (string sentence in sentences)
@@ -352,7 +353,7 @@ namespace Cored.Array
                 if (!string.IsNullOrWhiteSpace(currentSentence))
                 {
                     currentSentence = $"{currentSentence[0].ToString().ToUpper()}{currentSentence.Substring(1)}";
-                    buffer.Append(currentSentence + seperator + ' ');
+                    buffer.Append(currentSentence + separator + ' ');
                 }
             }
 
@@ -401,7 +402,7 @@ namespace Cored.Array
         /// <param name="length"></param>
         /// <param name="dotsToBeUsed"></param>
         /// <returns></returns>
-        public static string ToSummarisedText(
+        public static string ToSummarizedText(
             this string s,
             int length,
             bool dotsToBeUsed = false)
@@ -425,7 +426,7 @@ namespace Cored.Array
         /// <param name="length"></param>
         /// <param name="dotsToBeUsed"></param>
         /// <returns></returns>
-        public static string ToSummarisedTextRight(
+        public static string ToSummarizedTextRight(
             this string s,
             int length,
             bool dotsToBeUsed = false)
@@ -455,9 +456,9 @@ namespace Cored.Array
 
             StringBuilder result = new StringBuilder(s.Normalize(NormalizationForm.FormD).Length);
 
-            for (int i = 0; i < s.Length; i++)
-                if (CharUnicodeInfo.GetUnicodeCategory(s[i]) != UnicodeCategory.NonSpacingMark)
-                    result.Append(s[i]);
+            foreach (var character in s)
+                if (CharUnicodeInfo.GetUnicodeCategory(character) != UnicodeCategory.NonSpacingMark)
+                    result.Append(character);
 
             return result.ToString();
         }
@@ -480,7 +481,7 @@ namespace Cored.Array
                 || s.Contains("\"")
                 || s.Contains("\n")
                 || s[0] == ' '
-                || s[s.Length - 1] == ' ')
+                || s[^1] == ' ')
             {
                 s = $"\"{s}\"";
             }
@@ -491,7 +492,7 @@ namespace Cored.Array
         /// <summary>
         /// UK Telephone Number Patterns
         /// </summary>
-        private static readonly Regex[] ukNumberPatterns =
+        private static readonly Regex[] UkNumberPatterns =
         {
             new Regex(@"(?<first>013873)(?<second>\d{5})"),
             new Regex(@"(?<first>015242)(?<second>\d{5})"),
@@ -531,7 +532,7 @@ namespace Cored.Array
                 return number;
 
             Regex matchedPattern = null;
-            foreach (Regex pattern in ukNumberPatterns)
+            foreach (Regex pattern in UkNumberPatterns)
             {
                 if (pattern.IsMatch(number))
                 {
@@ -544,11 +545,13 @@ namespace Cored.Array
                 var matchCollection = matchedPattern.Matches(number);
                 if (matchCollection[0].Groups.Count == 3)
                 {
-                    return string.Format("{0} {1}", matchCollection[0].Groups["first"], matchCollection[0].Groups["second"]);
+                    return $"{matchCollection[0].Groups["first"]} {matchCollection[0].Groups["second"]}";
                 }
-                else if (matchCollection[0].Groups.Count == 4)
+
+                if (matchCollection[0].Groups.Count == 4)
                 {
-                    return string.Format("{0} {1} {2}", matchCollection[0].Groups["first"], matchCollection[0].Groups["second"], matchCollection[0].Groups["third"]);
+                    return
+                        $"{matchCollection[0].Groups["first"]} {matchCollection[0].Groups["second"]} {matchCollection[0].Groups["third"]}";
                 }
             }
             return number;
@@ -565,7 +568,7 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// Returns double qouted string
+        /// Returns double quoted string
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -644,12 +647,13 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// Finds the number of charachters in a string 
+        /// Finds the number of characters in a string
         /// - include/exclude extra spaces, tabs and new line characters
         /// </summary>
         /// <param name="s"></param>
+        /// <param name="clean"></param>
         /// <returns></returns>
-        public static int GetTotalNumberOfCharachters(
+        public static int GetTotalNumberOfCharacters(
             this string s,
             bool clean = false)
         {
@@ -666,14 +670,14 @@ namespace Cored.Array
         /// <returns></returns>
         public static int GetTotalNumberOfWords(this string s)
         {
-            if (s.IsNullOrWhiteSpace())
+            if(s.IsNullOrWhiteSpace())
                 return 0;
 
             int result = 1;
 
             s = s.ToCleanString();
 
-            for (int i = 0; i <= s.Length - 1; i++)
+            for(int i = 0; i <= s.Length - 1; i++)
             {
                 if (s[i] == ' ')
                 {
@@ -740,7 +744,7 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// Counts the Occurrences of a pattern in a text, 
+        /// Counts the Occurrences of a pattern in a text,
         /// The default is Case Sensitive search
         /// </summary>
         /// <param name="s"></param>
@@ -769,7 +773,7 @@ namespace Cored.Array
 
             int count = 0;
             int i = 0;
-            while ((i = tempS.IndexOf(tempP, i)) != -1)
+            while ((i = tempS.IndexOf(tempP, i, StringComparison.Ordinal)) != -1)
             {
                 i += tempP.Length;
                 count++;
@@ -783,7 +787,7 @@ namespace Cored.Array
         /// <param name="s">the text</param>
         /// <param name="n">the number of characters</param>
         /// <returns>resulted text</returns>
-        public static string RemoveNumberOfCharsAtBegining(this string s, int n)
+        public static string RemoveNumberOfCharsAtBeginning(this string s, int n)
         {
             if (s.IsNullOrEmpty())
                 return s;
@@ -826,7 +830,7 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// Extract the file extension from a valid 
+        /// Extract the file extension from a valid
         /// path string or returns empty string
         /// </summary>
         /// <param name="s"></param>
@@ -899,9 +903,8 @@ namespace Cored.Array
         /// <param name="s"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string AddToBeginingIfMissed(this string s, string value)
+        public static string AddToBeginningIfMissed(this string s, string value)
         {
-
             if (value.IsNullOrEmpty())
                 throw new ArgumentException("the missed text cannot be empty!");
 
@@ -918,7 +921,6 @@ namespace Cored.Array
         /// <returns></returns>
         public static string FindAllDigits(this string s)
         {
-
             if (s.IsNullOrEmpty())
                 return s;
 
@@ -947,8 +949,8 @@ namespace Cored.Array
             if (s.IsNullOrEmpty())
                 return s;
 
-            var reg_exp = new Regex("[^0123456789.]");
-            return reg_exp.Replace(s, "");
+            var regExp = new Regex("[^0123456789.]");
+            return regExp.Replace(s, "");
         }
 
         /// <summary>
@@ -980,7 +982,7 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// Convert the slashes in a path with the right 
+        /// Convert the slashes in a path with the right
         /// format depending on RuntimePlatform (Windows or else)
         /// </summary>
         /// <param name="s"></param>
@@ -1013,19 +1015,14 @@ namespace Cored.Array
             if (blockLength < s.Length)
                 return s;
 
-            if (blockLength < 0)
-                throw new ArgumentOutOfRangeException(nameof(blockLength));
-
-            s = s ?? string.Empty;
-
             string result = s.Length > blockLength ? s.Substring(0, blockLength) : s;
 
             int reminderBlockSpace = blockLength - result.Trim().Length;
             int sideSpace = reminderBlockSpace / 2;
             bool sideSpaceIsEven = reminderBlockSpace % 2 == 0;
 
-            return new string(' ', sideSpace) 
-                + result 
+            return new string(' ', sideSpace)
+                + result
                 + new string(' ', sideSpaceIsEven || sideSpace == 0 ? sideSpace : sideSpace - 1);
         }
 
@@ -1035,7 +1032,7 @@ namespace Cored.Array
         /// <param name="s">the input string</param>
         /// <param name="r">the replacement character</param>
         /// <returns></returns>
-        public static string ReplaceNonASCIICharsWith(this string s, char r)
+        public static string ReplaceNonAsciiCharsWith(this string s, char r)
         {
             if (s.IsNullOrEmpty())
                 return s;
@@ -1044,7 +1041,7 @@ namespace Cored.Array
         }
 
         /// <summary>
-        /// Replace first occurrence of a string in a text 
+        /// Replace first occurrence of a string in a text
         /// </summary>
         /// <param name="s"></param>
         /// <param name="search"></param>
@@ -1064,7 +1061,7 @@ namespace Cored.Array
             if (replace == null)
                 throw new ArgumentNullException(nameof(replace));
 
-            int pos = s.IndexOf(search);
+            int pos = s.IndexOf(search, StringComparison.Ordinal);
 
             if (pos < 0)
             {
@@ -1091,8 +1088,6 @@ namespace Cored.Array
             if (blockLength < 0)
                 throw new ArgumentOutOfRangeException(nameof(blockLength));
 
-            s = s ?? string.Empty;
-
             string result = s.Length > blockLength ? s.Substring(0, blockLength) : s;
 
             int reminderBlockSpace = blockLength - result.Trim().Length;
@@ -1105,7 +1100,7 @@ namespace Cored.Array
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static string RemoveNonASCIIChars(this string s)
+        public static string RemoveNonAsciiChars(this string s)
         {
             if (s.IsNullOrEmpty())
                 return s;
@@ -1144,7 +1139,6 @@ namespace Cored.Array
         /// <returns></returns>
         public static string AddToEndIfMissed(this string s, string value)
         {
-
             if (value.IsNullOrEmpty())
                 throw new ArgumentException("the missed text cannot be empty!");
 
@@ -1184,7 +1178,6 @@ namespace Cored.Array
             int maxSentences,
             int numParagraphs)
         {
-
             var words = new[]{"lorem", "ipsum", "dolor", "sit", "amet", "consectetuer",
                                 "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod",
                                 "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat"};
@@ -1239,13 +1232,10 @@ namespace Cored.Array
         /// <returns></returns>
         public static string GetFirstNullOrEmpty(params string[] values)
         {
-            for (var i = 0; i < values.Length; i++)
+            foreach (var value in values)
             {
-
-                if (values[i].IsNullOrEmpty())
-                    return values[i];
-
-                continue;
+                if (value.IsNullOrEmpty())
+                    return value;
             }
 
             return null;
@@ -1284,7 +1274,6 @@ namespace Cored.Array
             int maxSentences,
             int numParagraphs)
         {
-
             var words = new[]{"lorem", "ipsum", "dolor", "sit", "amet", "consectetuer",
                                 "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod",
                                 "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat"};

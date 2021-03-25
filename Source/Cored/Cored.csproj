@@ -12,15 +12,15 @@
     <Copyright>© Xylia 2020</Copyright>
     <PackageTags>Dependency Injection, Logger, FileLogger, XmlLogger, TaskManager</PackageTags>
     <PackageReleaseNotes>PostAsync and GetAsync method both have overloads tha returns deserialized JSON or XML of the specified type. Both methods are now extension methods of HttpClient; to allow usage of a single instance HttpClient in making requests.</PackageReleaseNotes>
-    <Version>1.3.0</Version>
+    <Version>1.3.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/JefferyAdusei/Fabric</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile></PackageLicenseFile>
     <PackageProjectUrl>https://github.com/JefferyAdusei/Fabric</PackageProjectUrl>
-    <AssemblyVersion>1.3.0.0</AssemblyVersion>
-    <FileVersion>1.3.0.0</FileVersion>
+    <AssemblyVersion>1.3.3.0</AssemblyVersion>
+    <FileVersion>1.3.3.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Array\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Environment\Hosted\" />
     <Folder Include="Fabric\Di\" />
     <Folder Include="Logging\Interfaces\" />

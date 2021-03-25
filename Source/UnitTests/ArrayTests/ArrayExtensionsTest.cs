@@ -1,4 +1,4 @@
-﻿using Cored.Array;
+﻿using Cored.Extensions;
 using Xunit;
 
 namespace UnitTests.ArrayTests

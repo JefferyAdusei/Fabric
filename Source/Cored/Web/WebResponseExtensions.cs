@@ -1,4 +1,6 @@
-﻿namespace Cored.Web
+﻿using System.Text;
+
+namespace Cored.Web
 {
     using System.IO;
     using System.Net.Http;
@@ -62,7 +64,6 @@
              * NOTE: By reading to the end of the stream, the stream will also close
              *       for us (which we must do to release the request)
              */
-
             result.RawServerResponse = await serverResponse.Content.ReadAsStreamAsync();
             //result.RawServerResponse = await streamReader.ReadToEndAsync();
 

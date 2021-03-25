@@ -2,7 +2,7 @@
 {
     using System;
     using System.Runtime.CompilerServices;
-    using Array;
+    using Extensions;
     using Microsoft.Extensions.Logging;
 
     /// <summary>

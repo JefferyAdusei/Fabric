@@ -1,4 +1,4 @@
-﻿namespace Cored.Array
+﻿namespace Cored.Extensions
 {
     using System.Collections.Generic;
     using System.Linq;

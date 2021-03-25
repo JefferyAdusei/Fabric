@@ -19,6 +19,16 @@ namespace Cored.Web
     /// </summary>
     public static class WebRequests
     {
+        #region Properties
+
+        /// <summary>
+        /// Sets the general serialization options to web for deserializing json from web api's.
+        /// </summary>
+        private static readonly JsonSerializerOptions SerializerOptions =
+            new(JsonSerializerDefaults.Web);
+
+        #endregion
+
         #region Get Request
 
         /// <summary>
@@ -122,12 +132,6 @@ namespace Cored.Web
                 return result;
             }
 
-            // If we have no content to deserialize...
-            if (result.RawServerResponse.Length <= 0)
-            {
-                return result;
-            }
-
             // Deserialize a raw response
             try
             {
@@ -146,7 +150,7 @@ namespace Cored.Web
                     case MimeTypes.Json:
                         await using (result.RawServerResponse)
                         {
-                            result.ServerResponse = await JsonSerializer.DeserializeAsync<TResponse>(result.RawServerResponse);
+                            result.ServerResponse = await JsonSerializer.DeserializeAsync<TResponse>(result.RawServerResponse, SerializerOptions);
                         }
                         break;
 
@@ -378,7 +382,7 @@ namespace Cored.Web
 
                         await using (result.RawServerResponse)
                         {
-                            result.ServerResponse = await JsonSerializer.DeserializeAsync<TResponse>(result.RawServerResponse);
+                            result.ServerResponse = await JsonSerializer.DeserializeAsync<TResponse>(result.RawServerResponse, SerializerOptions);
                         }
 
                         break;
