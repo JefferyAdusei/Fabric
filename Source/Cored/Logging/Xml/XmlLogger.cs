@@ -1,8 +1,11 @@
 ﻿namespace Cored.Logging.Xml
 {
     using Async;
+
     using Microsoft.Extensions.Logging;
+
     using Reflection;
+
     using System;
     using System.IO;
     using System.Threading.Tasks;
@@ -21,7 +24,7 @@
         /// </summary>
         /// <param name="filePath">The file path to write logs to</param>
         /// <param name="configuration">The configuration to use</param>
-        public XmlLogger(string filePath, LoggerConfiguration configuration)
+        public XmlLogger(string filePath, Configurator configuration)
         {
             // Set members
             _filePath = filePath.NormalizePath().ResolvePath();
@@ -55,7 +58,7 @@
         /// <summary>
         /// The log settings to use.
         /// </summary>
-        private readonly LoggerConfiguration _configuration;
+        private readonly Configurator _configuration;
 
         /// <summary>
         /// The document model provided by LINQ to create xml documents
@@ -85,7 +88,7 @@
 
             // If message is from source, the set the message values
             // Other wise use the generic ones provides and log only the message
-            object[] values = state as object[] ?? new object[]{$"{Path.GetFileName(typeof(TState).FileLocation())}", $"{Directory.GetCurrentDirectory()}", "0", $"{state}"};
+            object[] values = state as object[] ?? new object[] { $"{Path.GetFileName(typeof(TState).FileLocation())}", $"{Directory.GetCurrentDirectory()}", "0", $"{state}" };
 
             await AsyncLock.LockAsync(FileLock, () =>
             {
@@ -108,16 +111,16 @@
 
                 // Add new log to the logs
                 _xmlDocument?.Element("Logs")?
-                    .AddFirst(new XElement($"{logLevel.ToString()}",
+                    .AddFirst(new XElement($"{logLevel}",
                                            new XAttribute("Date", DateTime.Now.ToString("g")),
-                                           new XAttribute("Filepath", $"{values?[1]}"),
+                                           new XAttribute("Filepath", $"{values[1]}"),
 
                                            new XElement("Exception", new XAttribute("EventId", eventId), exception?.Source),
 
                                            new XElement("Message",
-                                                        new XAttribute("Origin", $"{values?[0]}"),
-                                                        new XAttribute("LineNumber", $"{values?[2]}"),
-                                                        $"{values?[3]}")
+                                                        new XAttribute("Origin", $"{values[0]}"),
+                                                        new XAttribute("LineNumber", $"{values[2]}"),
+                                                        $"{values[3]}")
                                           )
                              );
 

@@ -19,7 +19,7 @@
         /// </summary>
         /// <param name="filePath">The file path to write logs to</param>
         /// <param name="configuration">The configuration to use</param>
-        public FileLogger(string filePath, LoggerConfiguration configuration)
+        public FileLogger(string filePath, Configurator configuration)
         {
             // Set members
             _filePath = filePath.NormalizePath().ResolvePath();
@@ -53,7 +53,7 @@
         /// <summary>
         /// The log settings to use.
         /// </summary>
-        private readonly LoggerConfiguration _configuration;
+        private readonly Configurator _configuration;
 
         #endregion
 
@@ -87,12 +87,15 @@
 
                 // Open the file
                 await using StreamWriter fileStream =
-                    new StreamWriter(File.Open(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
+                    new(File.Open(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
                                                FileShare.ReadWrite));
                 fileStream.BaseStream.Seek(0, SeekOrigin.End);
 
                 // Write the message to the file
-                await fileStream.WriteAsync($"{logLevel}: {DateTimeOffset.Now:g} {formatter(state, exception)} \n");
+                await fileStream.WriteLineAsync($"{logLevel}: {DateTimeOffset.Now:g} {formatter(state, exception)}");
+
+                // Flush the stream
+                await fileStream.FlushAsync();
 
                 return await Task.FromResult(true);
             });

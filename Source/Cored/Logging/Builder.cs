@@ -21,10 +21,10 @@
         /// <param name="configuration">The configuration to use</param>
         /// <returns></returns>
         public static ILoggingBuilder AddFile(this ILoggingBuilder builder, string path,
-            LoggerConfiguration configuration = null)
+            Configurator configuration = null)
         {
             // Create default configuration if not provided
-            configuration ??= new LoggerConfiguration();
+            configuration ??= new Configurator();
 
             // Add file log provider to builder
             builder.AddProvider(new FileLoggerProvider(path, configuration));
@@ -45,10 +45,10 @@
         /// <param name="configuration">The configuration to use</param>
         /// <returns></returns>
         public static ILoggingBuilder AddXml(this ILoggingBuilder builder, string path,
-            LoggerConfiguration configuration = null)
+            Configurator configuration = null)
         {
             // Create default configuration if not provided
-            configuration ??= new LoggerConfiguration();
+            configuration ??= new Configurator();
 
             // Add xml log provider to builder
             builder.AddProvider(new XmlLoggerProvider(path, configuration));

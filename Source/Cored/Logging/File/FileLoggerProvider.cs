@@ -1,6 +1,7 @@
 ﻿namespace Cored.Logging.File
 {
     using System.Collections.Concurrent;
+
     using Microsoft.Extensions.Logging;
 
     /// <inheritdoc />
@@ -16,7 +17,7 @@
         /// </summary>
         /// <param name="path">The path of the file to log to</param>
         /// <param name="configuration">The configuration setting to use</param>
-        public FileLoggerProvider(string path, LoggerConfiguration configuration)
+        public FileLoggerProvider(string path, Configurator configuration)
         {
             // Set the configuration
             _configuration = configuration;
@@ -37,12 +38,12 @@
         /// <summary>
         /// Gets the configuration to use when creating a <see cref="FileLogger"/>
         /// </summary>
-        private readonly LoggerConfiguration _configuration;
+        private readonly Configurator _configuration;
 
         /// <summary>
         /// Keeps track of the loggers already created.
         /// </summary>
-        private readonly ConcurrentDictionary<string, FileLogger> _loggers = new ConcurrentDictionary<string, FileLogger>();
+        private readonly ConcurrentDictionary<string, FileLogger> _loggers = new();
 
         #endregion
 
@@ -57,7 +58,7 @@
 
         /// <inheritdoc />
         public ILogger CreateLogger(string categoryName) => _loggers
-            .GetOrAdd(categoryName, value => new FileLogger(_filePath, _configuration));
+            .GetOrAdd(categoryName, _ => new FileLogger(_filePath, _configuration));
 
         #endregion
     }

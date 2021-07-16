@@ -1,8 +1,5 @@
-﻿using System.Text;
-
-namespace Cored.Web
+﻿namespace Cored.Web
 {
-    using System.IO;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -22,7 +19,7 @@ namespace Cored.Web
         public static async Task<WebResponse<TResponse>> CreateWebResponseAsync<TResponse>(this HttpResponseMessage serverResponse)
         {
             // Return a new web request result
-            WebResponse<TResponse> result = new WebResponse<TResponse>
+            WebResponse<TResponse> result = new()
             {
                 Successful = serverResponse.IsSuccessStatusCode,
 
