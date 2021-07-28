@@ -3,9 +3,12 @@
     using System;
     using System.IO;
     using System.Reflection;
+
+    using Construction;
+
     using Exception;
     using Exception.Interface;
-    using Construction;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -28,6 +31,7 @@
         {
             // Create configuration source
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+
                 // Add environment variables
                 .AddEnvironmentVariables();
 
@@ -61,9 +65,9 @@
         /// <summary>
         /// Configures a fabric construction using the provided configuration
         /// </summary>
-        /// <param name="construction"></param>
-        /// <param name="configuration"></param>
-        /// <returns></returns>
+        /// <param name="construction">The fabric construction</param>
+        /// <param name="configuration">The configuration from dependency injection</param>
+        /// <returns>The fabric construction</returns>
         public static FabricConstruction AddConfiguration(this FabricConstruction construction,
             IConfiguration configuration)
         {

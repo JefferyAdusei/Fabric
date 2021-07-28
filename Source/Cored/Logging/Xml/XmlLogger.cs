@@ -1,15 +1,17 @@
-﻿namespace Cored.Logging.Xml
+﻿using System.Xml.Serialization;
+
+namespace Cored.Logging.Xml
 {
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+    using System.Xml.Linq;
+
     using Async;
 
     using Microsoft.Extensions.Logging;
 
     using Reflection;
-
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
-    using System.Xml.Linq;
 
     /// <inheritdoc />
     /// <summary>
@@ -22,13 +24,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlLogger"/> class.
         /// </summary>
-        /// <param name="filePath">The file path to write logs to</param>
         /// <param name="configuration">The configuration to use</param>
-        public XmlLogger(string filePath, Configurator configuration)
+        public XmlLogger(Configurator configuration)
         {
             // Set members
-            _filePath = filePath.NormalizePath().ResolvePath();
-            _directory = Path.GetDirectoryName(_filePath);
+            _directory = Path.GetDirectoryName(configuration.FilePath);
+            _filePath = Path.Combine(_directory, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
             _configuration = configuration;
         }
 
@@ -60,11 +61,6 @@
         /// </summary>
         private readonly Configurator _configuration;
 
-        /// <summary>
-        /// The document model provided by LINQ to create xml documents
-        /// </summary>
-        private XDocument _xmlDocument;
-
         #endregion
 
         #region Implementation of ILogger
@@ -90,42 +86,35 @@
             // Other wise use the generic ones provides and log only the message
             object[] values = state as object[] ?? new object[] { $"{Path.GetFileName(typeof(TState).FileLocation())}", $"{Directory.GetCurrentDirectory()}", "0", $"{state}" };
 
-            await AsyncLock.LockAsync(FileLock, () =>
+            await AsyncLock.LockAsync(FileLock, async () =>
             {
                 if (!Directory.Exists(_directory))
                 {
                     Directory.CreateDirectory(_directory);
                 }
-                // Create the xml file if it does not exist
-                if (!File.Exists(_filePath))
+
+
+                var log = new Log()
                 {
-                    _xmlDocument = new XDocument(
-                                                 new XDeclaration("1.0", "UTF-8", "yes"),
-                                                 new XElement("Logs"));
-                    _xmlDocument.Save(_filePath);
-                }
+                    Exception = exception?.Source,
+                    FilePath = $"{values[1]}",
+                    LogLevel = logLevel,
+                    Message = new Message()
+                    {
+                        Line = (int)values[2],
+                        Origin = $"{values[0]}",
+                        Text = $"{values[3]}"
+                    }
+                };
 
-                // Load the xml file
+                await using StreamWriter fileStream = new(File.Open(_filePath, FileMode.OpenOrCreate,
+                    FileAccess.Write, FileShare.ReadWrite));
 
-                _xmlDocument = XDocument.Load(_filePath);
+                fileStream.BaseStream.Seek(0, SeekOrigin.End);
 
-                // Add new log to the logs
-                _xmlDocument?.Element("Logs")?
-                    .AddFirst(new XElement($"{logLevel}",
-                                           new XAttribute("Date", DateTime.Now.ToString("g")),
-                                           new XAttribute("Filepath", $"{values[1]}"),
+                XmlSerializer serializer = new XmlSerializer(typeof(Log));
 
-                                           new XElement("Exception", new XAttribute("EventId", eventId), exception?.Source),
-
-                                           new XElement("Message",
-                                                        new XAttribute("Origin", $"{values[0]}"),
-                                                        new XAttribute("LineNumber", $"{values[2]}"),
-                                                        $"{values[3]}")
-                                          )
-                             );
-
-                // Save the document
-                _xmlDocument.Save(_filePath);
+                serializer.Serialize(fileStream, log);
 
                 return Task.FromResult(true);
             });

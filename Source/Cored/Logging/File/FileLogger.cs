@@ -17,13 +17,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FileLogger"/> class.
         /// </summary>
-        /// <param name="filePath">The file path to write logs to</param>
         /// <param name="configuration">The configuration to use</param>
-        public FileLogger(string filePath, Configurator configuration)
+        public FileLogger(Configurator configuration)
         {
             // Set members
-            _filePath = filePath.NormalizePath().ResolvePath();
-            _directory = Path.GetDirectoryName(_filePath);
+            _directory = Path.GetDirectoryName(configuration.FilePath);
+            _filepath = Path.Combine(_directory, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
             _configuration = configuration;
         }
 
@@ -41,14 +40,14 @@
         #region Private Members
 
         /// <summary>
-        /// The file path to write log to.
-        /// </summary>
-        private readonly string _filePath;
-
-        /// <summary>
         /// The path to the directory the log file is in.
         /// </summary>
         private readonly string _directory;
+
+        /// <summary>
+        /// The path to the log file
+        /// </summary>
+        private readonly string _filepath;
 
         /// <summary>
         /// The log settings to use.
@@ -87,7 +86,7 @@
 
                 // Open the file
                 await using StreamWriter fileStream =
-                    new(File.Open(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
+                    new(File.Open(_filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
                                                FileShare.ReadWrite));
                 fileStream.BaseStream.Seek(0, SeekOrigin.End);
 

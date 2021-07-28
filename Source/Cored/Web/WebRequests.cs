@@ -25,7 +25,7 @@ namespace Cored.Web
         /// Sets the general serialization options to web for deserializing json from web api's.
         /// </summary>
         private static readonly JsonSerializerOptions SerializerOptions =
-            new(JsonSerializerDefaults.Web);
+            new (JsonSerializerDefaults.Web);
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace Cored.Web
             string bearerToken = null)
         {
             // Set the request message
-            using HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            using HttpRequestMessage requestMessage = new (HttpMethod.Get, url);
 
             // If we have a bearer token...
             if (bearerToken != null)
@@ -249,10 +249,10 @@ namespace Cored.Web
                 case MimeTypes.Xml:
                 {
                     // Create XML serializer
-                    XmlSerializer xmlSerializer = new XmlSerializer(content?.GetType()!);
+                    XmlSerializer xmlSerializer = new (content?.GetType()!);
 
                     // Create a string writer to receive the serialized string
-                    await using StringWriter stringWriter = new StringWriter();
+                    await using StringWriter stringWriter = new ();
 
                     // Serialize the object to a string
                     xmlSerializer.Serialize(stringWriter, content!);

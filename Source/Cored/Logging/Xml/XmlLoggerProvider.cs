@@ -15,25 +15,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlLoggerProvider"/> class.
         /// </summary>
-        /// <param name="path">The path of the file to log to</param>
         /// <param name="configuration">The configuration setting to use</param>
-        public XmlLoggerProvider(string path, Configurator configuration)
+        public XmlLoggerProvider(Configurator configuration)
         {
             // Set the configuration
             _configuration = configuration;
-
-            // Set the path
-            _filePath = path;
         }
 
         #endregion
 
         #region Protected Members
-
-        /// <summary>
-        /// Gets the path to the log file
-        /// </summary>
-        private readonly string _filePath;
 
         /// <summary>
         /// Gets the configuration to use when creating a <see cref="XmlLogger"/>
@@ -58,7 +49,7 @@
 
         /// <inheritdoc />
         public ILogger CreateLogger(string categoryName) => _loggers
-            .GetOrAdd(categoryName, _ => new XmlLogger(_filePath, _configuration));
+            .GetOrAdd(categoryName, _ => new XmlLogger(_configuration));
 
         #endregion
     }
