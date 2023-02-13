@@ -22,7 +22,7 @@
         {
             // Set members
             _directory = Path.GetDirectoryName(configuration.FilePath);
-            _filepath = Path.Combine(_directory, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
+            _filepath = Path.Combine(_directory!, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
             _configuration = configuration;
         }
 

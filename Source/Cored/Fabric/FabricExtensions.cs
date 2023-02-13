@@ -41,7 +41,7 @@
                 // Add file based configuration.
 
                 // Set base path for JSON files as the startup location of the application
-                configurationBuilder.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                configurationBuilder.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!);
 
                 // Add application settings json files
                 configurationBuilder.AddJsonFile("appsettings.json", true, true);

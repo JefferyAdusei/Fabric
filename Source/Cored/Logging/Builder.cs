@@ -40,7 +40,6 @@
         /// Adds a new xml logger to the specified path.
         /// </summary>
         /// <param name="builder">The log builder to add to</param>
-        /// <param name="path">The path of the xml file to write to</param>
         /// <param name="configuration">The configuration to use</param>
         /// <returns></returns>
         public static ILoggingBuilder AddXml(this ILoggingBuilder builder,

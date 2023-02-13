@@ -5,7 +5,6 @@ namespace Cored.Logging.Xml
     using System;
     using System.IO;
     using System.Threading.Tasks;
-    using System.Xml.Linq;
 
     using Async;
 
@@ -29,7 +28,7 @@ namespace Cored.Logging.Xml
         {
             // Set members
             _directory = Path.GetDirectoryName(configuration.FilePath);
-            _filePath = Path.Combine(_directory, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
+            _filePath = Path.Combine(_directory!, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
             _configuration = configuration;
         }
 
