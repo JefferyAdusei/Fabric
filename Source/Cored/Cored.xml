@@ -1021,12 +1021,11 @@
             <param name="configuration">The configuration to use</param>
             <returns></returns>
         </member>
-        <member name="M:Cored.Logging.Builder.AddXml(Microsoft.Extensions.Logging.ILoggingBuilder,System.String,Cored.Logging.Configurator)">
+        <member name="M:Cored.Logging.Builder.AddXml(Microsoft.Extensions.Logging.ILoggingBuilder,Cored.Logging.Configurator)">
             <summary>
             Adds a new xml logger to the specified path.
             </summary>
             <param name="builder">The log builder to add to</param>
-            <param name="path">The path of the xml file to write to</param>
             <param name="configuration">The configuration to use</param>
             <returns></returns>
         </member>
@@ -1038,12 +1037,12 @@
             <param name="configurator">The configuration setting for the file logger, null to use default configuration</param>
             <returns>The fabric construction for chaining</returns>
         </member>
-        <member name="M:Cored.Logging.Builder.AddXmlLogger(Cored.Fabric.Construction.FabricConstruction,System.String)">
+        <member name="M:Cored.Logging.Builder.AddXmlLogger(Cored.Fabric.Construction.FabricConstruction,Cored.Logging.Configurator)">
             <summary>
             Injects an xml logger into the fabric construction
             </summary>
             <param name="construction">The calling fabric construction to be chained</param>
-            <param name="logPath">The path to the log file</param>
+            <param name="configurator"></param>
             <returns>The fabric construction for chaining</returns>
         </member>
         <member name="T:Cored.Logging.Configurator">
@@ -1108,6 +1107,16 @@
             A logger that writes logs as normal text to file
             </summary>
         </member>
+        <member name="F:Cored.Logging.File.FileLogger._directory">
+            <summary>
+            The path to the directory the log file is in.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLogger._configuration">
+            <summary>
+            The log settings to use.
+            </summary>
+        </member>
         <member name="M:Cored.Logging.File.FileLogger.#ctor(Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.File.FileLogger"/> class.
@@ -1117,16 +1126,6 @@
         <member name="P:Cored.Logging.File.FileLogger.FileLock">
             <summary>
             Gets a unique key to lock file access
-            </summary>
-        </member>
-        <member name="F:Cored.Logging.File.FileLogger._directory">
-            <summary>
-            The path to the directory the log file is in.
-            </summary>
-        </member>
-        <member name="F:Cored.Logging.File.FileLogger._configuration">
-            <summary>
-            The log settings to use.
             </summary>
         </member>
         <member name="M:Cored.Logging.File.FileLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
@@ -1307,29 +1306,12 @@
             A logger that writes logs to file
             </summary>
         </member>
-        <member name="M:Cored.Logging.Xml.XmlLogger.#ctor(System.String,Cored.Logging.Configurator)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLogger"/> class.
-            </summary>
-            <param name="filePath">The file path to write logs to</param>
-            <param name="configuration">The configuration to use</param>
-        </member>
-        <member name="P:Cored.Logging.Xml.XmlLogger.FileLock">
-            <summary>
-            Gets a unique key to lock files
-            </summary>
-        </member>
-        <member name="F:Cored.Logging.Xml.XmlLogger._filePath">
-            <summary>
-            The file path to write log to.
-            </summary>
-        </member>
         <member name="F:Cored.Logging.Xml.XmlLogger._directory">
             <summary>
             The path to the directory the log file is in.
             </summary>
         </member>
-        <member name="F:Cored.Logging.Xml.XmlLogger._configuration">
+        <member name="F:Cored.Logging.Xml.XmlLogger._configurator">
             <summary>
             The log settings to use.
             </summary>
@@ -1337,6 +1319,17 @@
         <member name="F:Cored.Logging.Xml.XmlLogger._xmlDocument">
             <summary>
             The document model provided by LINQ to create xml documents
+            </summary>
+        </member>
+        <member name="M:Cored.Logging.Xml.XmlLogger.#ctor(Cored.Logging.Configurator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLogger"/> class.
+            </summary>
+            <param name="configurator">The configuration to use</param>
+        </member>
+        <member name="P:Cored.Logging.Xml.XmlLogger.FileLock">
+            <summary>
+            Gets a unique key to lock files
             </summary>
         </member>
         <member name="M:Cored.Logging.Xml.XmlLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
@@ -1358,23 +1351,27 @@
             <inheritdoc />
             File loggers are not scoped so this is always null
         </member>
+        <member name="M:Cored.Logging.Xml.XmlLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception)">
+            <summary>
+            Logs the message to file
+            </summary>
+            <typeparam name="TState">The type for the state</typeparam>
+            <param name="logLevel">The log level</param>
+            <param name="eventId">The event Id</param>
+            <param name="state">The details of the message</param>
+            <param name="exception">Any exception to add to the log</param>
+        </member>
         <member name="T:Cored.Logging.Xml.XmlLoggerProvider">
             <inheritdoc />
             <summary>
             Provides the ability to create instances of <see cref="T:Microsoft.Extensions.Logging.ILogger" />
             </summary>
         </member>
-        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.#ctor(System.String,Cored.Logging.Configurator)">
+        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.#ctor(Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLoggerProvider"/> class.
             </summary>
-            <param name="path">The path of the file to log to</param>
             <param name="configuration">The configuration setting to use</param>
-        </member>
-        <member name="F:Cored.Logging.Xml.XmlLoggerProvider._filePath">
-            <summary>
-            Gets the path to the log file
-            </summary>
         </member>
         <member name="F:Cored.Logging.Xml.XmlLoggerProvider._configuration">
             <summary>
