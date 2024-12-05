@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Cored.Logging
+﻿namespace Cored.Logging
 {
+    using System;
+    using System.Globalization;
     using System.IO;
     using System.Runtime.InteropServices;
 
@@ -29,28 +29,22 @@ namespace Cored.Logging
         /// <summary>
         /// Generates a file name for logs depending on the user's roll over choice
         /// </summary>
-        /// <param name="filepath">The file name to attach to roll over name</param>
+        /// <param name="filePath">The file name to attach to roll over name</param>
         /// <param name="roll">The roll over choice of the user</param>
         /// <returns>The generated file name based of the roll over choice</returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static string PathRoll(this string filepath, Roll? roll)
+        /// <exception cref="ArgumentOutOfRangeException">Throws an out of range exception</exception>
+        public static string PathRoll(this string filePath, Roll? roll)
         {
             var today = DateTime.Today;
-            var filename = Path.GetFileName(filepath);
 
-            switch (roll)
+            return roll switch
             {
-                case Roll.Daily:
-                    return $"[{today.Day}][{today.Month}][{today.Year}]{filename}";
-                case Roll.Weekly:
-                    return $"[{today.Day}][{today.Month}][{today.Date}]{filename}";
-                case Roll.Monthly:
-                    return $"[{today.Month}][{today.Year}]{filename}";
-                case Roll.Yearly:
-                    return $"[{today.Year}]{filename}";
-                default:
-                    return filepath;
-            }
+                Roll.Daily => $"[{today.Day}][{today.Month}][{today.Year}]{filePath}",
+                Roll.Weekly => $"[{CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}][{today.Year}]{filePath}",
+                Roll.Monthly => $"[{today.Month}][{today.Year}]{filePath}",
+                Roll.Yearly => $"[{today.Year}]{filePath}",
+                _ => filePath
+            };
         }
     }
 }

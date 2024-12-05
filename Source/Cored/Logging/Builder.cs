@@ -78,7 +78,7 @@
         /// Injects an xml logger into the fabric construction
         /// </summary>
         /// <param name="construction">The calling fabric construction to be chained</param>
-        /// <param name="configurator"></param>
+        /// <param name="configurator">The configuration setting for the file logger, null to use default configuration</param>
         /// <returns>The fabric construction for chaining</returns>
         public static FabricConstruction AddXmlLogger(this FabricConstruction construction, Configurator configurator = null)
         {

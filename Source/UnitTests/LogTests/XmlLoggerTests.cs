@@ -1,12 +1,11 @@
-﻿using Cored.Logging.Xml;
-using Xunit;
+﻿using Xunit;
 
 namespace UnitTests.LogTests
 {
     public class XmlLoggerTests
     {
         [Fact]
-        public async void Log_FileCreated()
+        public void Log_FileCreated()
         {
             
         }

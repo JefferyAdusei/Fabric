@@ -20,6 +20,11 @@
         private readonly string _directory;
 
         /// <summary>
+        /// The path to the log file
+        /// </summary>
+        private readonly string _filepath;
+
+        /// <summary>
         /// The log settings to use.
         /// </summary>
         private readonly Configurator _configuration;
@@ -36,6 +41,7 @@
         {
             // Set members
             _directory = Path.GetDirectoryName(configuration.FilePath);
+            _filepath = Path.Combine(_directory!, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
             _configuration = configuration;
         }
 
@@ -80,7 +86,7 @@
 
                 // Open the file
                 await using StreamWriter fileStream =
-                    new(File.Open(_configuration.FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
+                    new(File.Open(_filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
                                                FileShare.ReadWrite));
                 fileStream.BaseStream.Seek(0, SeekOrigin.End);
 

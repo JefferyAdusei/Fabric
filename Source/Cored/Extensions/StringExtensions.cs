@@ -1085,9 +1085,6 @@ namespace Cored.Extensions
             if (blockLength < s.Length)
                 return s;
 
-            if (blockLength < 0)
-                throw new ArgumentOutOfRangeException(nameof(blockLength));
-
             string result = s.Length > blockLength ? s.Substring(0, blockLength) : s;
 
             int reminderBlockSpace = blockLength - result.Trim().Length;

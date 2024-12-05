@@ -2,6 +2,34 @@
 {
     using Microsoft.Extensions.Logging;
 
+    #region Roll
+    /// <summary>
+    /// Enumerator for configuring roll over times for logs
+    /// </summary>
+    public enum Roll
+    {
+        /// <summary>
+        /// Roll over log file yearly
+        /// </summary>
+        Yearly,
+
+        /// <summary>
+        /// Roll over log file monthly
+        /// </summary>
+        Monthly,
+
+        /// <summary>
+        /// Roll over log file weekly
+        /// </summary>
+        Weekly,
+
+        /// <summary>
+        /// Roll over log file daily
+        /// </summary>
+        Daily,
+    }
+    #endregion
+
     #region Configurator
 
     /// <summary>
@@ -31,46 +59,9 @@
         /// Gets or sets a value indicating whether the log level should be
         /// part of the log message.
         /// </summary>
-        public bool OutputLogLevel { get; set; } = true;
-
-        #endregion
-
-        #region Generated Properties
-
-        /// <summary>
-        /// Gets the OS normalized and resolved file path to the path specified
-        /// </summary>
         public string FilePath => Path.PathRoll(Roll).NormalizePath().ResolvePath();
 
         #endregion
-    }
-    #endregion
-
-    #region Roll
-    /// <summary>
-    /// Enumerator for configuring roll over times for logs
-    /// </summary>
-    public enum Roll
-    {
-        /// <summary>
-        /// Roll over log file yearly
-        /// </summary>
-        Yearly,
-
-        /// <summary>
-        /// Roll over log file monthly
-        /// </summary>
-        Monthly,
-
-        /// <summary>
-        /// Roll over log file weekly
-        /// </summary>
-        Weekly,
-
-        /// <summary>
-        /// Roll over log file daily
-        /// </summary>
-        Daily,
     }
     #endregion
 }

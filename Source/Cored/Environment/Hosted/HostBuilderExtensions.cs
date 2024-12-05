@@ -1,9 +1,11 @@
 ﻿namespace Cored.Environment.Hosted
 {
+    using System;
+
     using Fabric;
     using Fabric.Construction;
+
     using Microsoft.Extensions.Hosting;
-    using System;
 
     /// <summary>
     /// Extension methods for <see cref="IHostBuilder"/>
@@ -15,7 +17,7 @@
         /// </summary>
         /// <param name="builder">The program initializing abstraction</param>
         /// <param name="construction">Custom action to configure Fabric's construction</param>
-        /// <returns></returns>
+        /// <returns>The IHostBuilder for chaining</returns>
         public static IHostBuilder UseFabric(this IHostBuilder builder, Action<FabricConstruction> construction = null)
         {
             builder.ConfigureServices((context, services) =>
@@ -30,19 +32,6 @@
 
                 // Invoke construction configuration if specified
                 construction?.Invoke(Fabric.Construction);
-
-                /*
-                 * NOTE: Fabric will do .Build() from the Startup.cs configure call in ASP.NET CORE
-                 *      app.UseFabric();
-                 *
-                 * In any other hosted environment, .Build should be called inside UseFabric
-                 *      Host.CreateDefaultBuilder(args)
-                 *          .UseFabric(construct =>
-                 *              {
-                 *                  all other content here
-                 *                  construct.Build();
-                 *              })
-                 */
             });
 
             // return builder for chaining

@@ -6,21 +6,21 @@
     <LangVersion>latest</LangVersion>
     <PackageId>Fabric_Jeffery</PackageId>
     <Authors>Jeffery Adusei</Authors>
-    <Company>Xyliar</Company>
+    <Company>Spyder</Company>
     <Product>Fabric</Product>
     <Description>Simple dependency injection framework, with built it File, and Xml Logger. Could be configured to work with desktop and web applicatins seamlessly. Includes ability to make xml and json web api calls without having to serialize or deserialize the request and responses.</Description>
-    <Copyright>© Xylia 2024</Copyright>
+    <Copyright>© Spyder 2023</Copyright>
     <PackageTags>Dependency Injection, Logger, FileLogger, XmlLogger, TaskManager</PackageTags>
     <PackageReleaseNotes>PostAsync and GetAsync method both have overloads tha returns deserialized JSON or XML of the specified type. Both methods are now extension methods of HttpClient; to allow usage of a single instance HttpClient in making requests.</PackageReleaseNotes>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/JefferyAdusei/Fabric</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile></PackageLicenseFile>
     <PackageProjectUrl>https://github.com/JefferyAdusei/Fabric</PackageProjectUrl>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
