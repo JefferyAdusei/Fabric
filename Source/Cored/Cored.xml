@@ -4,29 +4,6 @@
         <name>Cored</name>
     </assembly>
     <members>
-        <member name="T:Cored.Array.ArrayExtensions">
-            <summary>
-            Extension methods for arrays.
-            </summary>
-        </member>
-        <member name="M:Cored.Array.ArrayExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},``0[])">
-            <summary>
-            Appends the given objects to the original array source.
-            </summary>
-            <typeparam name="T">The specified type of the array</typeparam>
-            <param name="source">The original array of values</param>
-            <param name="toAdd">The values to append to the source.</param>
-            <returns>The concatenated array of the specified type</returns>
-        </member>
-        <member name="M:Cored.Array.ArrayExtensions.Prepend``1(``0[],``0[])">
-            <summary>
-            Prepend the given objects to the original source array
-            </summary>
-            <typeparam name="T">The specified type of the array</typeparam>
-            <param name="source">The original array of values</param>
-            <param name="toAdd">The values to append to the source.</param>
-            <returns>The prepended array of the specified type.</returns>
-        </member>
         <member name="T:Cored.Async.AsyncLock">
             <summary>
             <para>
@@ -203,6 +180,535 @@
             <param name="lambda">The lambda expression.</param>
             <param name="value">The value to set the property to.</param>
             <param name="input">The input to the expression</param>
+        </member>
+        <member name="T:Cored.Extensions.ArrayExtensions">
+            <summary>
+            Extension methods for arrays.
+            </summary>
+        </member>
+        <member name="M:Cored.Extensions.ArrayExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},``0[])">
+            <summary>
+            Appends the given objects to the original array source.
+            </summary>
+            <typeparam name="T">The specified type of the array</typeparam>
+            <param name="source">The original array of values</param>
+            <param name="toAdd">The values to append to the source.</param>
+            <returns>The concatenated array of the specified type</returns>
+        </member>
+        <member name="M:Cored.Extensions.ArrayExtensions.Prepend``1(``0[],``0[])">
+            <summary>
+            Prepend the given objects to the original source array
+            </summary>
+            <typeparam name="T">The specified type of the array</typeparam>
+            <param name="source">The original array of values</param>
+            <param name="toAdd">The values to append to the source.</param>
+            <returns>The prepended array of the specified type.</returns>
+        </member>
+        <member name="T:Cored.Extensions.StringExtensions">
+            <summary>
+            Extension method for manipulating strings
+            </summary>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsNullOrEmpty(System.String)">
+            <summary>
+            Is Null Or Empty String?
+            </summary>
+            <param name="s">string</param>
+            <returns>true/false</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsNullOrWhiteSpace(System.String)">
+            <summary>
+            Is Null Or White Space String?
+            </summary>
+            <param name="s">string</param>
+            <returns>true/false</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsDigit(System.Char)">
+            <summary>
+            Examines the Char if it is digit (0-9)
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsInteger(System.String)">
+            <summary>
+            Examines the String if it is Integer
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsNumber(System.String)">
+            <summary>
+            Examines the String if it is Number
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsAlphaNumeric(System.String)">
+            <summary>
+            Is the string alphanumeric?
+            </summary>
+            <param name="s">text</param>
+            <returns>true/false</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IsValidUrl(System.String)">
+            <summary>
+            Is the URL string is valid?
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.IfNullReturnEmptyString(System.String)">
+            <summary>
+            If the string is null convert it to empty
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.Reverse(System.String)">
+            <summary>
+            Reverse the input string
+            </summary>
+            <param name="s">text</param>
+            <returns>reversed text</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.RemoveExtraSpaces(System.String)">
+            <summary>
+            Remove Extra Spaces from the text
+            </summary>
+            <param name="s">text</param>
+            <returns>clean text</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ReplaceTabsWithSpaces(System.String)">
+            <summary>
+            Replace the Tabs with Spaces and remove the extra spaces
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ReplaceNewLinesWithSpaces(System.String)">
+            <summary>
+            Replace the New Line Chars with Spaces and remove the extra spaces
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToCleanString(System.String)">
+            <summary>
+            Clean the text from the tabs, New Line Chars, and Extra Spaces
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToAlphaNumericString(System.String)">
+            <summary>
+            Remove all charachters rather than letters and numbers
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToHtml(System.String)">
+            <summary>
+            Convert string to HTML format (Replacing \n with equivelent HTML Tag)
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToNcharAbbreviation(System.String,System.Int32)">
+            <summary>
+            To N Number of Characters Abbreviation
+            </summary>
+            <param name="s"></param>
+            <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToDistinctListOfWords(System.String)">
+            <summary>
+            Return List of distinct words of a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToHyperlink(System.String)">
+            <summary>
+            Convert string to Hyperlink
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToAbbreviation(System.String)">
+            <summary>
+            To Abbreviation
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToSentenceCase(System.String,System.Char)">
+            <summary>
+            Returns Sentence Case of a text
+            </summary>
+            <param name="s"></param>
+            <param name="separator"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.To16ByteSaltedHash(System.String)">
+            <summary>
+            Convert a string to hash (16 bytes)
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToBase64(System.String)">
+            <summary>
+            Encode a string into Base64
+            </summary>
+            <param name="plainText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToSummarizedText(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Extract Summary Text of long Text
+            </summary>
+            <param name="s"></param>
+            <param name="length"></param>
+            <param name="dotsToBeUsed"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToSummarizedTextRight(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Extract Summary Text of long Text (from the right)
+            </summary>
+            <param name="s"></param>
+            <param name="length"></param>
+            <param name="dotsToBeUsed"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToAccentEliminated(System.String)">
+            <summary>
+            Eliminate accent from a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToCsvCompatible(System.String)">
+            <summary>
+            Convert the text to be support being CSV
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Cored.Extensions.StringExtensions.UkNumberPatterns">
+            <summary>
+            UK Telephone Number Patterns
+            </summary>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToUkTelephoneFormat(System.String)">
+            <summary>
+            Format a phone number as UK Telephone Number
+            </summary>
+            <param name="number"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToUpperCaseCanonicalGuid(System.Guid)">
+            <summary>
+            Convert the traditional Guid to UpperCase Canonical Guid (without hyphen)
+            </summary>
+            <param name="guid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToDoubleQuotedString(System.String)">
+            <summary>
+            Returns double quoted string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToStringArrayFromDelimitedString(System.String,System.Char)">
+            <summary>
+            Extract String Array from Delimited String
+            </summary>
+            <param name="s"></param>
+            <param name="delimiter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToUrlFriendly(System.String)">
+            <summary>
+            Generate a Url Friendly String
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ToCanonicalGuid(System.Guid)">
+            <summary>
+            Convert the traditional Guid to Canonical Guid (without hyphen)
+            </summary>
+            <param name="guid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.CapitaliseEachWord(System.String)">
+            <summary>
+            Capitalise Each Word
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetTotalNumberOfCharacters(System.String,System.Boolean)">
+            <summary>
+            Finds the number of characters in a string
+            - include/exclude extra spaces, tabs and new line characters
+            </summary>
+            <param name="s"></param>
+            <param name="clean"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetTotalNumberOfWords(System.String)">
+            <summary>
+            Finds the number of words in a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetFirstLongestWord(System.String)">
+            <summary>
+            Get The Longest Word in a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetTotalNumberOfLines(System.String)">
+            <summary>
+            Finds the number of lines in a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetFirstShortestWord(System.String)">
+            <summary>
+            Get The Shortest Word in a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.CountStringOccurrences(System.String,System.String,System.Boolean)">
+            <summary>
+            Counts the Occurrences of a pattern in a text,
+            The default is Case Sensitive search
+            </summary>
+            <param name="s"></param>
+            <param name="pattern"></param>
+            <param name="isCaseSensitive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.RemoveNumberOfCharsAtBeginning(System.String,System.Int32)">
+            <summary>
+            Remove specific number of chars from at the begining of text
+            </summary>
+            <param name="s">the text</param>
+            <param name="n">the number of characters</param>
+            <returns>resulted text</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.RemoveAllLineBreaks(System.String)">
+            <summary>
+            Remove All Line Breaks in a text
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetUrlDomain(System.String)">
+            <summary>
+            Get Domain Part of a valid URL string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetFileExtension(System.String)">
+            <summary>
+            Extract the file extension from a valid
+            path string or returns empty string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetUrlDomain(System.Uri)">
+            <summary>
+            Get Domain Part of a valid URL
+            </summary>
+            <param name="uri"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.HowManyOccurrences(System.String,System.Char)">
+            <summary>
+            Return the number of Occurrences of a Char in a string
+            </summary>
+            <param name="s"></param>
+            <param name="targeted"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.HowManyOccurrences(System.String,System.String)">
+            <summary>
+            Return the number of Occurrences of a string in a text
+            </summary>
+            <param name="s"></param>
+            <param name="targeted"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.AddToBeginningIfMissed(System.String,System.String)">
+            <summary>
+            Add a specific text to the begining if missed
+            </summary>
+            <param name="s"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.FindAllDigits(System.String)">
+            <summary>
+            Return a string of all digits (0-9) available in a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.CleanNonNumericChars(System.String)">
+            <summary>
+            Return only the numbers of a string
+            </summary>
+            <param name="s">The input string</param>
+            <returns>The Numeric Chars of a string</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.FindNumberOfDigits(System.String)">
+            <summary>
+            Return the number of digits (0-9) available in a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.CorrectPathSlashes(System.String)">
+            <summary>
+            Convert the slashes in a path with the right
+            format depending on RuntimePlatform (Windows or else)
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.CenterAligned(System.String,System.Int32)">
+            <summary>
+            Align a string in the middle of a Space Block
+            </summary>
+            <param name="s"></param>
+            <param name="blockLength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ReplaceNonAsciiCharsWith(System.String,System.Char)">
+            <summary>
+            Replace non ASCII characters with custom char
+            </summary>
+            <param name="s">the input string</param>
+            <param name="r">the replacement character</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ReplaceFirstOccurrence(System.String,System.String,System.String)">
+            <summary>
+            Replace first occurrence of a string in a text
+            </summary>
+            <param name="s"></param>
+            <param name="search"></param>
+            <param name="replace"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.RightAligned(System.String,System.Int32)">
+            <summary>
+            Align a string in the right of a Space Block
+            </summary>
+            <param name="s"></param>
+            <param name="blockLength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.RemoveNonAsciiChars(System.String)">
+            <summary>
+            Remove Non ASCII Chars from a string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ReplaceDoubleQuotesWithSingle(System.String)">
+            <summary>
+            Replace all Double Quotes in a string with Single
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.NullIfEqualTo(System.String,System.String)">
+            <summary>
+            Return null if the string match the check string
+            </summary>
+            <param name="s"></param>
+            <param name="checkValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.AddToEndIfMissed(System.String,System.String)">
+            <summary>
+            Add a specific text to the end if missed
+            </summary>
+            <param name="s"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.ReplaceSingleQuotesWithDouble(System.String)">
+            <summary>
+            Replace all Single Quotes in a string with Double
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GenerateLoremIpsumHtmlSafe(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Generate Lorem Ipsum Html Paragraph text
+            </summary>
+            <param name="minWords"></param>
+            <param name="maxWords"></param>
+            <param name="minSentences"></param>
+            <param name="maxSentences"></param>
+            <param name="numParagraphs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.Coalesce(System.String[])">
+            <summary>
+            Return the first possible not null value of a string array
+            </summary>
+            <param name="values">string array</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GetFirstNullOrEmpty(System.String[])">
+            <summary>
+            Return the first possible null or empty value of a string array
+            </summary>
+            <param name="values">string array</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.RemoveNumberOfCharsAtEnd(System.String,System.Int32)">
+            <summary>
+            Remove specific number of chars from at the end of text
+            </summary>
+            <param name="s">the text</param>
+            <param name="n">the number of characters</param>
+            <returns>resulted text</returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.GenerateLoremIpsumString(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Generate Lorem Ipsum text
+            </summary>
+            <param name="minWords"></param>
+            <param name="maxWords"></param>
+            <param name="minSentences"></param>
+            <param name="maxSentences"></param>
+            <param name="numParagraphs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cored.Extensions.StringExtensions.DecodeBase64(System.String)">
+            <summary>
+            Decode a Base64 data into plain string
+            </summary>
+            <param name="base64EncodedData"></param>
+            <returns></returns>
         </member>
         <member name="T:Cored.Fabric.Construction.FabricConstruction">
             <summary>
@@ -507,16 +1013,15 @@
             Extension methods for the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> implemented classes.
             </summary>
         </member>
-        <member name="M:Cored.Logging.Builder.AddFile(Microsoft.Extensions.Logging.ILoggingBuilder,System.String,Cored.Logging.LoggerConfiguration)">
+        <member name="M:Cored.Logging.Builder.AddFile(Microsoft.Extensions.Logging.ILoggingBuilder,Cored.Logging.Configurator)">
             <summary>
             Adds a new file logger to the specified path.
             </summary>
             <param name="builder">The log builder to add to</param>
-            <param name="path">The path of the file to write to</param>
             <param name="configuration">The configuration to use</param>
             <returns></returns>
         </member>
-        <member name="M:Cored.Logging.Builder.AddXml(Microsoft.Extensions.Logging.ILoggingBuilder,System.String,Cored.Logging.LoggerConfiguration)">
+        <member name="M:Cored.Logging.Builder.AddXml(Microsoft.Extensions.Logging.ILoggingBuilder,System.String,Cored.Logging.Configurator)">
             <summary>
             Adds a new xml logger to the specified path.
             </summary>
@@ -525,12 +1030,12 @@
             <param name="configuration">The configuration to use</param>
             <returns></returns>
         </member>
-        <member name="M:Cored.Logging.Builder.AddFileLogger(Cored.Fabric.Construction.FabricConstruction,System.String)">
+        <member name="M:Cored.Logging.Builder.AddFileLogger(Cored.Fabric.Construction.FabricConstruction,Cored.Logging.Configurator)">
             <summary>
             Injects a file logger into the fabric construction
             </summary>
             <param name="construction">The calling fabric construction to be chained</param>
-            <param name="logPath">The path to the log file</param>
+            <param name="configurator">The configuration setting for the file logger, null to use default configuration</param>
             <returns>The fabric construction for chaining</returns>
         </member>
         <member name="M:Cored.Logging.Builder.AddXmlLogger(Cored.Fabric.Construction.FabricConstruction,System.String)">
@@ -541,27 +1046,77 @@
             <param name="logPath">The path to the log file</param>
             <returns>The fabric construction for chaining</returns>
         </member>
+        <member name="T:Cored.Logging.Configurator">
+            <summary>
+            The configuration for a <see cref="T:Microsoft.Extensions.Logging.ILogger"/> implementations
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.Path">
+            <summary>
+            Gets or sets the path to log the file
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.LogLevel">
+            <summary>
+            Gets or sets the level of the log that should be processed.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.Roll">
+            <summary>
+            Gets or sets the time event on which to roll the log to another file
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.OutputLogLevel">
+            <summary>
+            Gets or sets a value indicating whether the log level should be
+            part of the log message.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.FilePath">
+            <summary>
+            Gets the OS normalized and resolved file path to the path specified
+            </summary>
+        </member>
+        <member name="T:Cored.Logging.Roll">
+            <summary>
+            Enumerator for configuring roll over times for logs
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Roll.Yearly">
+            <summary>
+            Roll over log file yearly
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Roll.Monthly">
+            <summary>
+            Roll over log file monthly
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Roll.Weekly">
+            <summary>
+            Roll over log file weekly
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.Roll.Daily">
+            <summary>
+            Roll over log file daily
+            </summary>
+        </member>
         <member name="T:Cored.Logging.File.FileLogger">
             <inheritdoc />
             <summary>
             A logger that writes logs as normal text to file
             </summary>
         </member>
-        <member name="M:Cored.Logging.File.FileLogger.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+        <member name="M:Cored.Logging.File.FileLogger.#ctor(Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.File.FileLogger"/> class.
             </summary>
-            <param name="filePath">The file path to write logs to</param>
             <param name="configuration">The configuration to use</param>
         </member>
         <member name="P:Cored.Logging.File.FileLogger.FileLock">
             <summary>
             Gets a unique key to lock file access
-            </summary>
-        </member>
-        <member name="F:Cored.Logging.File.FileLogger._filePath">
-            <summary>
-            The file path to write log to.
             </summary>
         </member>
         <member name="F:Cored.Logging.File.FileLogger._directory">
@@ -599,17 +1154,11 @@
             Provides the ability to create instances of <see cref="T:Microsoft.Extensions.Logging.ILogger" />
             </summary>
         </member>
-        <member name="M:Cored.Logging.File.FileLoggerProvider.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+        <member name="M:Cored.Logging.File.FileLoggerProvider.#ctor(Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.File.FileLoggerProvider"/> class.
             </summary>
-            <param name="path">The path of the file to log to</param>
             <param name="configuration">The configuration setting to use</param>
-        </member>
-        <member name="F:Cored.Logging.File.FileLoggerProvider._filePath">
-            <summary>
-            Gets the path to the log file
-            </summary>
         </member>
         <member name="F:Cored.Logging.File.FileLoggerProvider._configuration">
             <summary>
@@ -626,33 +1175,6 @@
         </member>
         <member name="M:Cored.Logging.File.FileLoggerProvider.CreateLogger(System.String)">
             <inheritdoc />
-        </member>
-        <member name="T:Cored.Logging.LoggerConfiguration">
-            <summary>
-            The configuration for a <see cref="T:Microsoft.Extensions.Logging.ILogger"/> implementations
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.LoggerConfiguration.LogLevel">
-            <summary>
-            Gets or sets the level of the log that should be processed.
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.LoggerConfiguration.LogTime">
-            <summary>
-            Gets or sets a value indicating whether to log time as part of the message
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.LoggerConfiguration.LogAtTop">
-            <summary>
-            Gets or sets a value indicating whether to display latest logs at the top
-            of the file.
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.LoggerConfiguration.OutputLogLevel">
-            <summary>
-            Gets or sets a value indicating whether the log level should be
-            part of the log message.
-            </summary>
         </member>
         <member name="T:Cored.Logging.LoggerExtensions">
             <summary>
@@ -770,13 +1292,22 @@
             <param name="path">The path to resolve</param>
             <returns>The resolved path</returns>
         </member>
+        <member name="M:Cored.Logging.PathExtensions.PathRoll(System.String,System.Nullable{Cored.Logging.Roll})">
+            <summary>
+            Generates a file name for logs depending on the user's roll over choice
+            </summary>
+            <param name="filepath">The file name to attach to roll over name</param>
+            <param name="roll">The roll over choice of the user</param>
+            <returns>The generated file name based of the roll over choice</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
         <member name="T:Cored.Logging.Xml.XmlLogger">
             <inheritdoc />
             <summary>
             A logger that writes logs to file
             </summary>
         </member>
-        <member name="M:Cored.Logging.Xml.XmlLogger.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+        <member name="M:Cored.Logging.Xml.XmlLogger.#ctor(System.String,Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLogger"/> class.
             </summary>
@@ -833,7 +1364,7 @@
             Provides the ability to create instances of <see cref="T:Microsoft.Extensions.Logging.ILogger" />
             </summary>
         </member>
-        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.#ctor(System.String,Cored.Logging.LoggerConfiguration)">
+        <member name="M:Cored.Logging.Xml.XmlLoggerProvider.#ctor(System.String,Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLoggerProvider"/> class.
             </summary>
@@ -1048,6 +1579,11 @@
         <member name="T:Cored.Web.WebRequests">
             <summary>
             Provides HTTP calls for sending and receiving information from a HTTP server
+            </summary>
+        </member>
+        <member name="F:Cored.Web.WebRequests.SerializerOptions">
+            <summary>
+            Sets the general serialization options to web for deserializing json from web api's.
             </summary>
         </member>
         <member name="M:Cored.Web.WebRequests.GetAsync(System.Net.Http.HttpClient,System.String,Cored.Web.Mimes.MimeTypes,System.Action{System.Net.Http.HttpRequestMessage},System.String)">

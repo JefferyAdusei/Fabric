@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Cored.Logging
+﻿namespace Cored.Logging
 {
     using Microsoft.Extensions.Logging;
 

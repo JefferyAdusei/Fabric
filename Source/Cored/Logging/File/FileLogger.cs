@@ -12,6 +12,20 @@
     /// </summary>
     public class FileLogger : ILogger
     {
+        #region Private Members
+
+        /// <summary>
+        /// The path to the directory the log file is in.
+        /// </summary>
+        private readonly string _directory;
+
+        /// <summary>
+        /// The log settings to use.
+        /// </summary>
+        private readonly Configurator _configuration;
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -34,21 +48,7 @@
         /// </summary>
         private static string FileLock => nameof(FileLogger) + Guid.NewGuid();
 
-        #endregion
-
-        #region Private Members
-
-        /// <summary>
-        /// The path to the directory the log file is in.
-        /// </summary>
-        private readonly string _directory;
-
-        /// <summary>
-        /// The log settings to use.
-        /// </summary>
-        private readonly Configurator _configuration;
-
-        #endregion
+        #endregion        
 
         #region Implementation of ILogger
 
