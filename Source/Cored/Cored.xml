@@ -94,7 +94,7 @@
             </summary>
             <param name="builder">The program initializing abstraction</param>
             <param name="construction">Custom action to configure Fabric's construction</param>
-            <returns></returns>
+            <returns>The IHostBuilder for chaining</returns>
         </member>
         <member name="T:Cored.Environment.IFabricEnvironment">
             <summary>
@@ -969,9 +969,9 @@
             <summary>
             Configures a fabric construction using the provided configuration
             </summary>
-            <param name="construction"></param>
-            <param name="configuration"></param>
-            <returns></returns>
+            <param name="construction">The fabric construction</param>
+            <param name="configuration">The configuration from dependency injection</param>
+            <returns>The fabric construction</returns>
         </member>
         <member name="M:Cored.Fabric.FabricExtensions.AddLocalExceptionHandler(Cored.Fabric.Construction.FabricConstruction)">
             <summary>
@@ -1042,39 +1042,8 @@
             Injects an xml logger into the fabric construction
             </summary>
             <param name="construction">The calling fabric construction to be chained</param>
-            <param name="configurator"></param>
+            <param name="configurator">The configuration setting for the file logger, null to use default configuration</param>
             <returns>The fabric construction for chaining</returns>
-        </member>
-        <member name="T:Cored.Logging.Configurator">
-            <summary>
-            The configuration for a <see cref="T:Microsoft.Extensions.Logging.ILogger"/> implementations
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.Configurator.Path">
-            <summary>
-            Gets or sets the path to log the file
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.Configurator.LogLevel">
-            <summary>
-            Gets or sets the level of the log that should be processed.
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.Configurator.Roll">
-            <summary>
-            Gets or sets the time event on which to roll the log to another file
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.Configurator.OutputLogLevel">
-            <summary>
-            Gets or sets a value indicating whether the log level should be
-            part of the log message.
-            </summary>
-        </member>
-        <member name="P:Cored.Logging.Configurator.FilePath">
-            <summary>
-            Gets the OS normalized and resolved file path to the path specified
-            </summary>
         </member>
         <member name="T:Cored.Logging.Roll">
             <summary>
@@ -1101,6 +1070,32 @@
             Roll over log file daily
             </summary>
         </member>
+        <member name="T:Cored.Logging.Configurator">
+            <summary>
+            The configuration for a <see cref="T:Microsoft.Extensions.Logging.ILogger"/> implementations
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.Path">
+            <summary>
+            Gets or sets the path to log the file
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.LogLevel">
+            <summary>
+            Gets or sets the level of the log that should be processed.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.Roll">
+            <summary>
+            Gets or sets the time event on which to roll the log to another file
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Configurator.FilePath">
+            <summary>
+            Gets or sets a value indicating whether the log level should be
+            part of the log message.
+            </summary>
+        </member>
         <member name="T:Cored.Logging.File.FileLogger">
             <inheritdoc />
             <summary>
@@ -1110,6 +1105,11 @@
         <member name="F:Cored.Logging.File.FileLogger._directory">
             <summary>
             The path to the directory the log file is in.
+            </summary>
+        </member>
+        <member name="F:Cored.Logging.File.FileLogger._filepath">
+            <summary>
+            The path to the log file
             </summary>
         </member>
         <member name="F:Cored.Logging.File.FileLogger._configuration">
@@ -1295,10 +1295,60 @@
             <summary>
             Generates a file name for logs depending on the user's roll over choice
             </summary>
-            <param name="filepath">The file name to attach to roll over name</param>
+            <param name="filePath">The file name to attach to roll over name</param>
             <param name="roll">The roll over choice of the user</param>
             <returns>The generated file name based of the roll over choice</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Throws an out of range exception</exception>
+        </member>
+        <member name="T:Cored.Logging.Xml.Log">
+            <summary>
+            The log serialization model
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Log.LogLevel">
+            <summary>
+            Gets or sets the log level.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Log.Date">
+            <summary>
+            The date the log is made.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Log.FilePath">
+            <summary>
+            Gets or sets the file path.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Log.Exception">
+            <summary>
+            Gets or sets the exception.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Log.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+        </member>
+        <member name="T:Cored.Logging.Xml.Message">
+            <summary>
+            The message model for the log
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Message.Origin">
+            <summary>
+            Gets or sets the file from which this message is coming from origin.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Message.Line">
+            <summary>
+            Gets or sets the line number the text was generated from.
+            </summary>
+        </member>
+        <member name="P:Cored.Logging.Xml.Message.Text">
+            <summary>
+            Gets or sets the text of the message.
+            </summary>
         </member>
         <member name="T:Cored.Logging.Xml.XmlLogger">
             <inheritdoc />
@@ -1311,21 +1361,21 @@
             The path to the directory the log file is in.
             </summary>
         </member>
-        <member name="F:Cored.Logging.Xml.XmlLogger._configurator">
+        <member name="F:Cored.Logging.Xml.XmlLogger._filepath">
             <summary>
-            The log settings to use.
+            The path to the log file
             </summary>
         </member>
-        <member name="F:Cored.Logging.Xml.XmlLogger._xmlDocument">
+        <member name="F:Cored.Logging.Xml.XmlLogger._configuration">
             <summary>
-            The document model provided by LINQ to create xml documents
+            The log settings to use.
             </summary>
         </member>
         <member name="M:Cored.Logging.Xml.XmlLogger.#ctor(Cored.Logging.Configurator)">
             <summary>
             Initializes a new instance of the <see cref="T:Cored.Logging.Xml.XmlLogger"/> class.
             </summary>
-            <param name="configurator">The configuration to use</param>
+            <param name="configuration">The configuration to use</param>
         </member>
         <member name="P:Cored.Logging.Xml.XmlLogger.FileLock">
             <summary>
@@ -1350,16 +1400,6 @@
         <member name="M:Cored.Logging.Xml.XmlLogger.BeginScope``1(``0)">
             <inheritdoc />
             File loggers are not scoped so this is always null
-        </member>
-        <member name="M:Cored.Logging.Xml.XmlLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception)">
-            <summary>
-            Logs the message to file
-            </summary>
-            <typeparam name="TState">The type for the state</typeparam>
-            <param name="logLevel">The log level</param>
-            <param name="eventId">The event Id</param>
-            <param name="state">The details of the message</param>
-            <param name="exception">Any exception to add to the log</param>
         </member>
         <member name="T:Cored.Logging.Xml.XmlLoggerProvider">
             <inheritdoc />

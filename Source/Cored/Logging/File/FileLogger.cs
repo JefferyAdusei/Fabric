@@ -40,7 +40,7 @@
         public FileLogger(Configurator configuration)
         {
             // Set members
-            _directory = Path.GetDirectoryName(configuration.FilePath);
+            _directory = Path.GetDirectoryName(configuration.Path);
             _filepath = Path.Combine(_directory!, Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
             _configuration = configuration;
         }
