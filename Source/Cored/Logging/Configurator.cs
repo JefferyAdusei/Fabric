@@ -59,7 +59,7 @@
         /// Gets or sets a value indicating whether the log level should be
         /// part of the log message.
         /// </summary>
-        public string FilePath => Path.PathRoll(Roll).NormalizePath().ResolvePath();
+        public string FilePath => Path.NormalizePath().ResolvePath();
 
         #endregion
     }

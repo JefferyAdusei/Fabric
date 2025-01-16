@@ -44,8 +44,7 @@ namespace Cored.Logging.Xml
         {
             // Set members
             _directory = Path.GetDirectoryName(configuration.Path);
-            _filepath = Path.Combine(_directory!,
-                Path.GetFileName(configuration.FilePath).PathRoll(configuration.Roll));
+            _filepath = Path.Combine(_directory!, configuration.FilePath.PathRoll(configuration.Roll));
             _configuration = configuration;
         }
 

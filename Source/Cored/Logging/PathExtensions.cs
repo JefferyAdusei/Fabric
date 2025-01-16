@@ -36,14 +36,15 @@
         public static string PathRoll(this string filePath, Roll? roll)
         {
             var today = DateTime.Today;
+            var filename = Path.GetFileName(filePath);
 
             return roll switch
             {
-                Roll.Daily => $"[{today.Day}][{today.Month}][{today.Year}]{filePath}",
-                Roll.Weekly => $"[{CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}][{today.Year}]{filePath}",
-                Roll.Monthly => $"[{today.Month}][{today.Year}]{filePath}",
-                Roll.Yearly => $"[{today.Year}]{filePath}",
-                _ => filePath
+                Roll.Daily => $"[{today.Day}][{today.Month}][{today.Year}]{filename}",
+                Roll.Weekly => $"[{CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}][{today.Year}]{filename}",
+                Roll.Monthly => $"[{today.Month}][{today.Year}]{filename}",
+                Roll.Yearly => $"[{today.Year}]{filename}",
+                _ => filename
             };
         }
     }
